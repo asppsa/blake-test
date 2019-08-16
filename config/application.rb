@@ -18,6 +18,8 @@ require 'sprockets/railtie'
 Bundler.require(*Rails.groups)
 
 module BlakeTest
+  # As per the Ruby docs, the Application class is responsible for coordinating
+  # the boot process of this Rails app.
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.2
