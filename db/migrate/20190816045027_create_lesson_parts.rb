@@ -7,7 +7,7 @@ class CreateLessonParts < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
-    add_index :lesson_parts, [:lesson_id, :number], unique: true
+    add_index :lesson_parts, %i[lesson_id number], unique: true
 
     # Sadly ActiveRecord does not know how to add a foreign key to an existing
     # SQLite table.
