@@ -1,11 +1,37 @@
 require: rubocop-rails
 
-Style/FrozenStringLiteralComment:
-  Enabled: false
+AllCops:
+  TargetRubyVersion: 2.6.3
+  Exclude:
+    - db/schema.rb
+    - vendor/**/*
+
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*.rb
 
 Metrics/LineLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Exclude:
+    - db/migrate/*.rb
+
+Rails/SkipsModelValidations:
+  Exclude:
+    - spec/**/*.rb
+
+Style/Documentation:
+  Exclude:
+    - db/migrate/*.rb
+
+Style/FrozenStringLiteralComment:
   Enabled: false
 
 Style/MixinUsage:
   Exclude:
     - bin/*
+
+Style/NumericLiterals:
+  Exclude:
+    - db/**/*.rb
