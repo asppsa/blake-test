@@ -1,7 +1,7 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+# This creates 100 lessons with 3 parts to each one.
+Rails.logger.info 'Creating 100 lessons, numbered 1..100 ...'
+lessons = Lesson.create!((1..100).map { |number| { number: number } })
+Rails.logger.info 'Creating 3 lesson parts per lesson, numbered 1..3 ...'
+LessonPart.create!(lessons.flat_map do |lesson|
+  (1..3).map { |number| { number: number, lesson: lesson } }
+end)
