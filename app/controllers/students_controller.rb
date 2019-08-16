@@ -1,6 +1,7 @@
 # This controller manages CRUD operations for students
 class StudentsController < ApplicationController
   before_action :set_student, only: %i[show edit update destroy]
+  helper_method :lessons
 
   # GET /students
   # GET /students.json
@@ -60,6 +61,10 @@ class StudentsController < ApplicationController
     end
   end
 
+  def lessons
+    Lesson.includes(:parts).order(:number).all
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -69,6 +74,6 @@ class StudentsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def student_params
-    params.require(:student).permit(:name)
+    params.require(:student).permit(:name, :lesson_part_id)
   end
 end

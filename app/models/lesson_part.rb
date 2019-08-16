@@ -3,4 +3,8 @@
 class LessonPart < ApplicationRecord
   belongs_to :lesson
   has_many :students, dependent: :nullify
+
+  def display_number
+    "Lesson #{lesson.number}, Part #{number}"
+  end
 end

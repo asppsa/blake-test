@@ -16,6 +16,11 @@
     <%= form.text_field :name %>
   </div>
 
+  <div class="field">
+    <%= form.label :lesson_part %>
+    <%= form.grouped_collection_select :lesson_part_id, lessons, :parts, :display_number, :id, :display_number, include_blank: "No Current Lesson" %>
+  </div>
+
   <div class="actions">
     <%= form.submit %>
   </div>

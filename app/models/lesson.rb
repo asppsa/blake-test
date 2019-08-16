@@ -4,4 +4,8 @@ class Lesson < ApplicationRecord
            class_name: 'LessonPart',
            dependent: :destroy,
            inverse_of: :lesson
+
+  def display_number
+    "Lesson #{number}"
+  end
 end
