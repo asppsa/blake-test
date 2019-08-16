@@ -1,1 +1,11 @@
 require: rubocop-rails
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Metrics/LineLength:
+  Enabled: false
+
+Style/MixinUsage:
+  Exclude:
+    - bin/*
