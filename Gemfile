@@ -50,7 +50,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
-group :test do
+group :development, :test do
   gem 'rspec-rails', '~> 3.8.2'
   gem 'rubocop-rails', '~> 2.3.0'
 end
