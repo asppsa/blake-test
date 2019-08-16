@@ -52,6 +52,7 @@ end
 
 group :test do
   gem 'rspec-rails', '~> 3.8.2'
+  gem 'rubocop-rails', '~> 2.3.0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
