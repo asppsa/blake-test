@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  # Add this redirect for simplicity
+  get '/', to: redirect('/students')
   resources :students
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
