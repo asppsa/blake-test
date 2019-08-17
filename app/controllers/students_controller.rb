@@ -6,12 +6,19 @@ class StudentsController < ApplicationController
   # GET /students
   # GET /students.json
   def index
-    @students = Student.all
+    @students = Student.includes(lesson_part: :lesson).all
   end
 
-  # GET /students/1
+  # The show method only responds to JSON requests.  Other requests are
+  # redirected to the student view.
+  #
   # GET /students/1.json
-  def show; end
+  def show
+    respond_to do |format|
+      format.html { redirect_to Student }
+      format.json { render :show }
+    end
+  end
 
   # GET /students/new
   def new
@@ -28,7 +35,7 @@ class StudentsController < ApplicationController
 
     respond_to do |format|
       if @student.save
-        format.html { redirect_to @student, notice: 'Student was successfully created.' }
+        format.html { redirect_to Student, notice: 'Student was successfully created.' }
         format.json { render :show, status: :created, location: @student }
       else
         format.html { render :new }
@@ -42,7 +49,7 @@ class StudentsController < ApplicationController
   def update
     respond_to do |format|
       if @student.update(student_params)
-        format.html { redirect_to @student, notice: 'Student was successfully updated.' }
+        format.html { redirect_to Student, notice: 'Student was successfully updated.' }
         format.json { render :show, status: :ok, location: @student }
       else
         format.html { render :edit }
