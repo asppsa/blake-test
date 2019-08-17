@@ -53,6 +53,9 @@ group :development do
 end
 
 group :development, :test do
+  gem 'factory_bot_rails', '~> 5.0', '>= 5.0.2'
+  gem 'humanize', '~> 2.1', '>= 2.1.1'
+  gem 'rails-controller-testing'
   gem 'rspec-rails', '~> 3.8.2'
   gem 'rubocop-rails', '~> 2.3.0'
 end

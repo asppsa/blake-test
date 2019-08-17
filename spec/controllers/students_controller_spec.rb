@@ -26,10 +26,10 @@ RSpec.describe StudentsController, type: :controller do
   end
 
   describe 'GET #show' do
-    it 'returns a success response' do
+    it 'redirects to the index' do
       student = Student.create! valid_attributes
       get :show, params: { id: student.to_param }, session: valid_session
-      expect(response).to be_successful
+      expect(response).to redirect_to(Student)
     end
   end
 
@@ -56,9 +56,9 @@ RSpec.describe StudentsController, type: :controller do
         end.to change(Student, :count).by(1)
       end
 
-      it 'redirects to the created student' do
+      it 'redirects to the student index' do
         post :create, params: { student: valid_attributes }, session: valid_session
-        expect(response).to redirect_to(Student.last)
+        expect(response).to redirect_to(Student)
       end
     end
 
@@ -83,10 +83,10 @@ RSpec.describe StudentsController, type: :controller do
         expect(student.name).to eq 'Jimbo'
       end
 
-      it 'redirects to the student' do
+      it 'redirects to the student index' do
         student = Student.create! valid_attributes
         put :update, params: { id: student.to_param, student: valid_attributes }, session: valid_session
-        expect(response).to redirect_to(student)
+        expect(response).to redirect_to(Student)
       end
     end
 

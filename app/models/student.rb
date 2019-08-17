@@ -5,6 +5,9 @@ class Student < ApplicationRecord
 
   validates :name,
             presence: true,
-            format: /\A[[:alpha:] ]+\z/,
+            format: /\A[[:alpha:] -]+\z/,
             length: { maximum: 200 }
+
+  # Make sure no trailing whitespace on names
+  before_save { self.name = name.strip }
 end

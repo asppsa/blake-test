@@ -1,17 +1,13 @@
 require 'rails_helper'
+require_relative './helper.rb'
 
 RSpec.describe 'students/new', type: :view do
-  before(:each) do
-    assign(:student, Student.new(
-                       name: 'MyString'
-                     ))
+  before :each do
+    assign(:student, Student.new(name: 'MyString'))
   end
 
-  it 'renders new student form' do
-    render
+  include_context :view_lessons_stub
+  let(:path) { students_path }
 
-    assert_select 'form[action=?][method=?]', students_path, 'post' do
-      assert_select 'input[name=?]', 'student[name]'
-    end
-  end
+  it_behaves_like 'a student form'
 end
