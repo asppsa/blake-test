@@ -1,7 +1,8 @@
 RSpec.shared_context :view_lessons_stub do
-  let(:lessons) { create_list(:lesson_with_parts, 100) }
+  let!(:lessons) { create_list(:lesson_with_parts, 100) }
 
-  # Lessons is a helper_method.  This magic is required to stub the helper in the view.
+  # #lessons is declared as a helper_method.  This magic is required to stub
+  # the helper.
   before do
     without_partial_double_verification do
       allow(view).to receive(:lessons).and_return(lessons)
