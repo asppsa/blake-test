@@ -133,15 +133,15 @@ scaffold.
 ## Further documentation
 
 Most of the Ruby code has been documented using [YARD][yard].  You will find
-the generated files in the `doc` folder.  You can open these in a browser by
-visiting `file:///path/to/the/blake-test/doc/index.html`.
+the generated files in the `docs` folder.  You can open these in a browser by
+visiting `file:///path/to/the/blake-test/docs/index.html`.
 
 Also, the JSON API implemented in Part 1B is documented using [APIPie][apipie].
 This isn't super, but it gives an indication of what the various data in the
 JSON are.  This gets launched when you run rails, so you can view it by going to 
-http://localhost:3000/apipie.  Static files are also in the `doc` folder
+http://localhost:3000/apipie.  Static files are also in the `docs` folder
 (as they are for YARD), so you can also view this by going to
-`file:///path/to/the/blake-test/doc/apidoc.html`.
+`file:///path/to/the/blake-test/docs/apidoc.html`.
 
 
 ## Discussion
