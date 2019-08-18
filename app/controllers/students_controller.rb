@@ -1,10 +1,13 @@
-# This controller manages CRUD operations for students
+# This Rails controller manages CRUD operations for {Student}s, including
+# serializing student data to JSON.
 class StudentsController < ApplicationController
   before_action :set_student, only: %i[show edit update destroy]
   helper_method :lessons
 
-  # GET /students
-  # GET /students.json
+  # Index of {Student}s
+  #
+  # - GET /students
+  # - GET /students.json
   def index
     @students = Student.includes(lesson_part: :lesson).all
   end
@@ -31,9 +34,12 @@ class StudentsController < ApplicationController
       param_group :timestamps
     end
   end
-  # The show method only responds to JSON requests.  Other requests are
-  # redirected to the student view.
   returns code: 404, desc: 'There is no student with that ID'
+
+  # Show a single {Student}
+  #
+  # - GET /students/1.json; or
+  # - GET /students/1 with Accept: application/json
   def show
     respond_to do |format|
       format.html { redirect_to Student }
@@ -41,16 +47,22 @@ class StudentsController < ApplicationController
     end
   end
 
+  # Show a "new student" form
+  #
   # GET /students/new
   def new
     @student = Student.new
   end
 
+  # Show an "edit student" form
+  #
   # GET /students/1/edit
   def edit; end
 
-  # POST /students
-  # POST /students.json
+  # Create a new {Student}
+  #
+  # - POST /students
+  # - POST /students.json
   def create
     @student = Student.new(student_params)
 
@@ -65,8 +77,10 @@ class StudentsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /students/1
-  # PATCH/PUT /students/1.json
+  # Update an existing {Student}
+  #
+  # - PATCH/PUT /students/1
+  # - PATCH/PUT /students/1.json
   def update
     respond_to do |format|
       if @student.update(student_params)
@@ -79,8 +93,10 @@ class StudentsController < ApplicationController
     end
   end
 
-  # DELETE /students/1
-  # DELETE /students/1.json
+  # Delete an existing {Student}
+  #
+  # - DELETE /students/1
+  # - DELETE /students/1.json
   def destroy
     @student.destroy
     respond_to do |format|
@@ -89,6 +105,10 @@ class StudentsController < ApplicationController
     end
   end
 
+  # This helper method returns a collection of all {Lesson}s in numbered order,
+  # with {LessonPart}s preloaded.
+  #
+  # @return [<Lesson>]
   def lessons
     Lesson.includes(:parts).order(:number).all
   end
