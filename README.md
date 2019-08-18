@@ -196,11 +196,10 @@ checks against some simple mistakes and antipatterns.
 
 To the best of my ability, I have proceeded with every new feature by writing
 accompanying specs to go with it.  I have mostly written specs for models,
-views and requests.  I haven't written full integration tests, but I believe
-that the test suite is pretty tight.  Something I could have done to improve
-things would have been to include a code coverage tool (like
-[simplecov][simplecov]), but I elected not to, due to my lack of familiarity
-with it.
+views and requests.  I haven't written full integration tests.  These would
+have resulted in a significantly slower test suite, and are probably not
+necessary for this project, given the extremely simplistic nature of the
+interface.
 
 Overall in writing tests, I have tried to demonstrate that I can write a good,
 thorough test suite that takes account of corner cases and that is easy to
@@ -212,9 +211,9 @@ reason, and I determined to map out the tasks that needed to be completed using
 [the GitHub issue tracker][issues], and for each new feature that was to be
 implemented [I would open pull request][closed-prs].  I set up [Travis
 CI][travis] so that I could continuously test the changes in each pull request
-against RSpec and Rubocop.  When these tests failed (as they often did), I
-applied additional commits and fixups until the tests passed again.  You can
-see this in action by reviewing the [closed PRs in GitHub][closed-prs].
+against RSpec and Rubocop.  When Travis failed (as it often did), I applied
+additional commits and fixups until the tests passed again.  You can see this
+in action by reviewing the [closed PRs in GitHub][closed-prs].
 
 ### Interpretting the requirements
 
@@ -356,7 +355,6 @@ tests had passed.
 [minitest]: https://github.com/seattlerb/minitest
 [rubocop]: https://www.rubocop.org/
 [rubocop-rails]: https://github.com/rubocop-hq/rubocop-rails
-[simplecov]: https://github.com/colszowka/simplecov
 [issues]: https://github.com/asppsa/blake-test/issues
 [closed-prs]: https://github.com/asppsa/blake-test/pulls?q=is%3Apr+is%3Aclosed
 [rails-scaffold]: https://guides.rubyonrails.org/command_line.html#rails-generate
