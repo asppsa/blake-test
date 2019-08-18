@@ -27,6 +27,38 @@ RSpec.describe 'Students', type: :request do
     end
   end
 
+  shared_examples 'a json view' do
+    let(:student) { create(:student) }
+
+    it 'returns a JSON representation of the student' do
+      expect(response).to have_http_status(200)
+      expect(response).to render_template(:show)
+      expect(response.content_type).to eq 'application/json'
+      expect { JSON.parse(response.body) }.not_to raise_error
+    end
+  end
+
+  describe 'GET /student/:id' do
+    context 'normal request' do
+      let(:student) { create(:student) }
+
+      it 'redirects to the students page' do
+        get student_path(student)
+        expect(response).to redirect_to(students_path)
+      end
+    end
+
+    context 'with Accept: application/json header' do
+      before { get student_path(student), headers: { Accept: 'application/json' } }
+      it_behaves_like 'a json view'
+    end
+  end
+
+  describe 'GET /student/:id.json' do
+    before { get student_path(student) + '.json' }
+    it_behaves_like 'a json view'
+  end
+
   shared_examples 'a student data setter' do
     context 'with a name and lesson part' do
       let(:lesson_part) { create(:lesson_part) }
