@@ -205,11 +205,11 @@ expected and no students progress will be lost
 
 <p>I also set up <a href="https://www.rubocop.org/">Rubocop</a> at the outset. I consider the kind of code linting that Rubocop provides to be an extremely useful extra check, in addition to my RSpec suite. <a href="https://github.com/rubocop-hq/rubocop-rails">rubocop-rails</a> provides useful checks against some simple mistakes and antipatterns.</p>
 
-<p>To the best of my ability, I have proceeded with every new feature by writing accompanying specs to go with it. I have mostly written specs for models, views and requests. I haven&#39;t written full integration tests, but I believe that the test suite is pretty tight. Something I could have done to improve things would have been to include a code coverage tool (like <a href="https://github.com/colszowka/simplecov">simplecov</a>), but I elected not to, due to my lack of familiarity with it.</p>
+<p>To the best of my ability, I have proceeded with every new feature by writing accompanying specs to go with it. I have mostly written specs for models, views and requests. I haven&#39;t written full integration tests. These would have resulted in a significantly slower test suite, and are probably not necessary for this project, given the extremely simplistic nature of the interface.</p>
 
 <p>Overall in writing tests, I have tried to demonstrate that I can write a good, thorough test suite that takes account of corner cases and that is easy to understand.</p>
 
-<p>I also made the decision at the outset that I wanted to demonstrate my ability to employ the kind of workflow that I gather is in place at Blake. For this reason, and I determined to map out the tasks that needed to be completed using <a href="https://github.com/asppsa/blake-test/issues">the GitHub issue tracker</a>, and for each new feature that was to be implemented <a href="https://github.com/asppsa/blake-test/pulls?q=is%3Apr+is%3Aclosed">I would open pull request</a>. I set up <a href="https://travis-ci.org/asppsa/blake-test/">Travis CI</a> so that I could continuously test the changes in each pull request against RSpec and Rubocop. When these tests failed (as they often did), I applied additional commits and fixups until the tests passed again. You can see this in action by reviewing the <a href="https://github.com/asppsa/blake-test/pulls?q=is%3Apr+is%3Aclosed">closed PRs in GitHub</a>.</p>
+<p>I also made the decision at the outset that I wanted to demonstrate my ability to employ the kind of workflow that I gather is in place at Blake. For this reason, and I determined to map out the tasks that needed to be completed using <a href="https://github.com/asppsa/blake-test/issues">the GitHub issue tracker</a>, and for each new feature that was to be implemented <a href="https://github.com/asppsa/blake-test/pulls?q=is%3Apr+is%3Aclosed">I would open pull request</a>. I set up <a href="https://travis-ci.org/asppsa/blake-test/">Travis CI</a> so that I could continuously test the changes in each pull request against RSpec and Rubocop. When Travis failed (as it often did), I applied additional commits and fixups until the tests passed again. You can see this in action by reviewing the <a href="https://github.com/asppsa/blake-test/pulls?q=is%3Apr+is%3Aclosed">closed PRs in GitHub</a>.</p>
 
 <h3 id="label-Interpretting+the+requirements">Interpretting the requirements</h3>
 
@@ -271,7 +271,7 @@ expected and no students progress will be lost
 </div></div>
 
       <div id="footer">
-  Generated on Sun Aug 18 18:47:14 2019 by
+  Generated on Sun Aug 18 20:27:51 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.6.3).
 </div>
