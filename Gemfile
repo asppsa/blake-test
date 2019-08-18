@@ -3,6 +3,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.6.3'
 
+# Used to generate and serve API docs
+gem 'apipie-rails', '~> 0.5.16'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.3'
 # Use sqlite3 as the database for Active Record
@@ -42,20 +44,25 @@ group :development, :test do
 end
 
 group :development do
+  # Add IRB in dev mode
+  gem 'irb', '~> 1.0.0'
+
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'web-console', '>= 3.3.0'
+
+  # Required by APIPie
+  gem 'rdoc', '~> 6.1', '>= 6.1.1'
+
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  # Add IRB in dev mode
-  gem 'irb', '~> 1.0.0'
 end
 
 group :development, :test do
   gem 'factory_bot_rails', '~> 5.0', '>= 5.0.2'
   gem 'humanize', '~> 2.1', '>= 2.1.1'
-  gem 'rails-controller-testing'
+  gem 'rails-controller-testing', '~> 1.0.4'
   gem 'rspec-rails', '~> 3.8.2'
   gem 'rubocop-rails', '~> 2.3.0'
 end

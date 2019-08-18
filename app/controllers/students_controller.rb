@@ -9,10 +9,31 @@ class StudentsController < ApplicationController
     @students = Student.includes(lesson_part: :lesson).all
   end
 
+  def_param_group :timestamps do
+    property :created_at, String, desc: 'ISO 8601 representation of creation timestamp', validate: false
+    property :updated_at, String, desc: 'ISO 8601 representation of creation timestamp', validate: false
+  end
+
+  api :GET, '/students/:id.json'
+  param :id, :number, desc: 'ID of the student'
+  returns code: 200, desc: 'JSON representation of the stuent and lesson progress' do
+    property :id, Integer, desc: 'Student ID'
+    property :name, String, desc: 'Student\'s (full) name'
+    param_group :timestamps
+    property :lesson, Hash, allow_nil: true, desc: "The student's current lesson" do
+      property :id, Integer, desc: 'Lesson ID'
+      property :number, Integer, desc: 'Lesson number'
+      param_group :timestamps
+    end
+    property :lesson_part, Hash, allow_nil: true, desc: "The student's current lesson part" do
+      property :id, Integer, desc: 'Lesson Part ID'
+      property :number, Integer, desc: 'Lesson part number'
+      param_group :timestamps
+    end
+  end
   # The show method only responds to JSON requests.  Other requests are
   # redirected to the student view.
-  #
-  # GET /students/1.json
+  returns code: 404, desc: 'There is no student with that ID'
   def show
     respond_to do |format|
       format.html { redirect_to Student }
