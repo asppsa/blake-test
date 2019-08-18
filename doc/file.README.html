@@ -58,34 +58,220 @@
       </div>
 
       <div id="content"><div id='filecontents'>
-<h1 id="label-README">README</h1>
+<h1 id="label-Blake-27s+Backend+Test">Blake&#39;s Backend Test</h1>
 
-<p>This README would normally document whatever steps are necessary to get the application up and running.</p>
+<p><a href="https://travis-ci.org/asppsa/blake-test"><img src="https://travis-ci.org/asppsa/blake-test.svg?branch=master"></a></p>
 
-<p>Things you may want to cover:</p>
-<ul><li>
-<p>Ruby version</p>
+<p>This is a <a href="https://rubyonrails.org/">Rails</a> app for <a href="https://asph.dev/">my</a> job application with <a href="https://dev.blake.com.au/">Blake E-Learning</a>. The brief is as follows:</p>
+
+<pre class="code ruby"><code class="ruby">PROBLEM
+-------
+Company X is developing a new app for student education. Students complete
+lessons and their progress is recorded.  Each lesson has 3 parts - 1, 2 and 3.
+There are 100 lessons in total.
+
+PART 1
+------
+Generate an app that persists students and their progress.
+
+Define routes for:
+a) setting a student&#39;s progress - progress should consist of a lesson and part number.
+b) returning a JSON representation of a student and their associated progress.
+
+PART 2
+------
+Teachers have classes containing number of students.
+
+a) Add a teacher model that is related to students
+b) Create a reports page for a teacher to view the progress of all of their students.
+
+PART 3
+------
+Calculating progress
+
+a) add a method for updating student progress - this should verify that the
+student is only able to complete the next part number in sequence e.g.
+
+L1 P1, L1 P2, L1 P3, L2 P1, L2 P2 etc
+
+PART 4 (optional)
+-----------------
+a) the first 50 lessons now have 5 parts. Ensure the system will still work as
+expected and no students progress will be lost
+</code></pre>
+
+<p>Currently Part 1 is implemented.</p>
+
+<h2 id="label-Environments">Environments</h2>
+
+<p>The app is tested with <a href="https://travis-ci.org/asppsa/blake-test/">Travis CI</a>, and is expected to run on either Linux or Mac OSX. I have developed the app on Linux.</p>
+
+<h2 id="label-System+Dependencies+-26+Configuration">System Dependencies &amp; Configuration</h2>
+
+<p>The basic requirements are <a href="https://www.ruby-lang.org/">MRI</a> 2.6 and <a href="https://bundler.io/">Bundler</a> &gt;= 2.0.2 in order to be able to run <code>bundle install</code>. I haven&#39;t used any fancy 2.6 features, so the app will probably work on other Rubies, but to save myself time, I haven&#39;t bothered to test any others.</p>
+
+<p>This app uses Rails 5.2, and should not require any system libraries beyond <a href="https://guides.rubyonrails.org/getting_started.html#installing-rails">those required by rails</a>. <a href="https://sqlite.org/index.html">SQLite3</a> is used for the database in all environments, so no other database engine is required.<sup><a id="footmark-1" href="#foottext-1">1</a></sup> Although other gems are pulled in, I am not aware of any that introduce any additional system dependencies.</p>
+
+<h2 id="label-Application+Installation+Instructions">Application Installation Instructions</h2>
+
+<p>As you might expect, the installation steps are:</p>
+<ol><li>
+<p>clone the git repo:</p>
+
+<pre class="code ruby"><code class="ruby"> git clone https://github.com/asppsa/blake-test.git
+ cd blake-test
+</code></pre>
 </li><li>
-<p>System dependencies</p>
+<p>install Ruby gems using Bundler:</p>
+
+<pre class="code ruby"><code class="ruby"> <span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_install'>install</span>
+</code></pre>
 </li><li>
-<p>Configuration</p>
+<p>create and seed the database:</p>
+
+<pre class="code ruby"><code class="ruby"> <span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_exec'>exec</span> <span class='id identifier rubyid_rails'>rails</span> <span class='label'>db:</span><span class='id identifier rubyid_setup'>setup</span>
+</code></pre>
+</li></ol>
+
+<h2 id="label-Launching">Launching</h2>
+
+<p>Whilst it is possible to run the app in production mode, there&#39;s really no reason to do so. As such, you can launch Rails simply by typing:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_rails'>rails</span> <span class='id identifier rubyid_s'>s</span>
+</code></pre>
+
+<p>This will start the server on <a href="http://localhost:3000">localhost:3000</a>/. Once you have the app open, you will be redirected straight to a page listing the students in the system.</p>
+
+<h2 id="label-Testing">Testing</h2>
+
+<p>Tests have been written in <a href="http://rspec.info/">RSpec</a> (and using <a href="http://rspec.info/documentation/3.8/rspec-rails/">rspec-rails</a>). You can run the test suite via the following incantation:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_exec'>exec</span> <span class='id identifier rubyid_rspec'>rspec</span>
+</code></pre>
+
+<h2 id="label-Usage">Usage</h2>
+
+<p>The student interface is based on the standard Rails scaffold. So, you can pretty easily add students, edit them and delete them. from the “students” page, which your browser should take you to if you visit <a href="http://localhost:3000">localhost:3000</a>/.</p>
+
+<p><img src="images/BlakeTest1.png"></p>
+
+<h3 id="label-Part+1A-3A+Route+for+setting+a+student-27s+progress">Part 1A: Route for setting a student&#39;s progress</h3>
+
+<p>In order to implement Part 1A of the brief, the “new/edit student” pages have a drop-down that allows you to set the student&#39;s current lesson and lesson part (after clicking “Update Student”).</p>
+
+<p><img src="images/BlakeTest2.png"></p>
+
+<h3 id="label-Part+1B-3A+JSON+representation+of+the+student+and+their+progress">Part 1B: JSON representation of the student and their progress</h3>
+
+<p>For Part 1B of the brief, the JSON for each student can be viewed by visiting <code>/students/:id.json</code> (or by making an HTTP request to <code>/students/:id</code> with an <code>Accept: application/json</code> header), where <code>:id</code> is replaced with the student&#39;s ID number. This too is based on the code generated by the standard Rails scaffold.</p>
+
+<h2 id="label-Further+documentation">Further documentation</h2>
+
+<p>Most of the Ruby code has been documented using <a href="https://yardoc.org/">YARD</a>. You will find the generated files in the <code>doc</code> folder. You can open these in a browser by visiting <code>file:///path/to/the/blake-test/doc/index.html</code>.</p>
+
+<p>Also, the JSON API implemented in Part 1B is documented using <a href="https://github.com/Apipie/apipie-rails">APIPie</a>. This isn&#39;t super, but it gives an indication of what the various data in the JSON are. This gets launched when you run rails, so you can view it by going to <a href="http://localhost:3000/apipie">localhost:3000/apipie</a>. Static files are also in the <code>doc</code> folder (as they are for YARD), so you can also view this by going to <code>file:///path/to/the/blake-test/doc/apidoc.html</code>.</p>
+
+<h2 id="label-Discussion">Discussion</h2>
+
+<p>In this section I outline the decisions I made in putting this app together.</p>
+
+<h3 id="label-Basic+Setup">Basic Setup</h3>
+
+<h4 id="label-Using+Rails">Using Rails</h4>
+
+<p>The first and most basic choice I had to make was what to use to build the app. I picked Rails for a number of reasons:</p>
+<ol><li>
+<p>to demonstrate that I know my way around Rails;</p>
 </li><li>
-<p>Database creation</p>
+<p>because it is very well supported;</p>
 </li><li>
-<p>Database initialization</p>
+<p>because I perceived that Rails is well-suited to the requirements set out in  the brief (managing data records and applying validation rules, viewing data  as JSON as well as HTML, etc.); and</p>
 </li><li>
-<p>How to run the test suite</p>
+<p>I hoped to leverage Rails generators to make less work for myself!</p>
+</li></ol>
+
+<p>Aside from this basic decision, I made a few other choices:</p>
+<ol><li>
+<p>Not to waste time setting up PostgreSQL. I suppose demonstrating my ability  to use Postgres would have been a plus, but it is clearly overkill for this  (toy) problem, and it would make the setup task harder for whoever it is  that has to evaluate this code.</p>
 </li><li>
-<p>Services (job queues, cache servers, search engines, etc.)</p>
+<p>Not to bother with any JavaScript or other frontend work beyond the absolute  bare minimum of CSS. I figured I should just focus on doing the backend  work well, given that this is a "backend test". This also enabled me to  take full advantage of Rails&#39; scaffold generator in order to implement Part  1.</p>
+</li></ol>
+
+<p>Overall, I hope I have demonstrated that I am able to show restraint and pragmatism when making choices about what technologies to use, and how to proceed with those. If I had built everything from scratch (e.g. no use of Rails generators), this project would probably have taken a lot longer to complete!</p>
+
+<h4 id="label-TDD-2C+RSpec+and+continuous+integration">TDD, RSpec and continuous integration</h4>
+
+<p>I picked <a href="http://rspec.info/">RSpec</a> for testing because I am much more familiar with it than <a href="https://github.com/seattlerb/minitest">minitest</a>. I used <a href="http://rspec.info/documentation/3.8/rspec-rails/">rspec-rails</a>, which provides a number of handy generators to get boilerplate tests. This enabled me to get testing straight away once I had installed Rails.</p>
+
+<p>I also set up <a href="https://www.rubocop.org/">Rubocop</a> at the outset. I consider the kind of code linting that Rubocop provides to be an extremely useful extra check, in addition to my RSpec suite. <a href="https://github.com/rubocop-hq/rubocop-rails">rubocop-rails</a> provides useful checks against some simple mistakes and antipatterns.</p>
+
+<p>To the best of my ability, I have proceeded with every new feature by writing accompanying specs to go with it. I have mostly written specs for models, views and requests. I haven&#39;t written full integration tests, but I believe that the test suite is pretty tight. Something I could have done to improve things would have been to include a code coverage tool (like <a href="https://github.com/colszowka/simplecov">simplecov</a>), but I elected not to, due to my lack of familiarity with it.</p>
+
+<p>Overall in writing tests, I have tried to demonstrate that I can write a good, thorough test suite that takes account of corner cases and that is easy to understand.</p>
+
+<p>I also made the decision at the outset that I wanted to demonstrate my ability to employ the kind of workflow that I gather is in place at Blake. For this reason, and I determined to map out the tasks that needed to be completed using <a href="https://github.com/asppsa/blake-test/issues">the GitHub issue tracker</a>, and for each new feature that was to be implemented <a href="https://github.com/asppsa/blake-test/pulls?q=is%3Apr+is%3Aclosed">I would open pull request</a>. I set up <a href="https://travis-ci.org/asppsa/blake-test/">Travis CI</a> so that I could continuously test the changes in each pull request against RSpec and Rubocop. When these tests failed (as they often did), I applied additional commits and fixups until the tests passed again. You can see this in action by reviewing the <a href="https://github.com/asppsa/blake-test/pulls?q=is%3Apr+is%3Aclosed">closed PRs in GitHub</a>.</p>
+
+<h3 id="label-Interpretting+the+requirements">Interpretting the requirements</h3>
+
+<p>In order to design the app, I had to make some interpretative decisions about what the brief actually called for. The basic idea that there are students progressing through lessons seemed very clear, but there were a few uncertainties.</p>
+<ol><li>
+<p>In normal every-day language, when we talk about “progress”, we are usually  discussing a process that evolves over time. A full-featured database  representation of a student&#39;s progress would therefore probably need to keep  track of progress by logging each thing that the student did, so that for  instance, it would be possible to determine how long they spent on a  particular module. In this model, the student&#39;s progress would be  represented by the combination of all of those interactions, and in  relational terms, it would mean having a many-to-many relationship between  students and lessons.</p>
+</li></ol>
+
+<p>However, the brief very explicitly says that “progress should consist of a  lesson and part number”. I took this to mean that the above model would be  overengineering for this test, and so I elected to use a simpler database  design (see below).</p>
+<ol><li>
+<p>I was initially uncertain what the distinction was between Part 1A (“setting  a student&#39;s progress”) and Part 3 (“updating student progress”). I decided  to treat Part 1A as a task to set up a human data entry interface where a  student&#39;s information (specifically their progress) could be set to any  valid value, without the sequence restriction described in Part 3.</p>
+</li></ol>
+
+<h3 id="label-Database+Design">Database Design</h3>
+
+<p>First, it is perhaps worth questioning whether this problem required a database at all. I determined that it did due to the requirement to “persist students and their progress”. I elected to use SQL because it is what I know best, and as mentioned above I chose SQLite3 to keep things simple (acknowledging that a real world app would almost certainly not use SQLite).</p>
+
+<p>In designing the <a href="https://github.com/asppsa/blake-test/issues/14">designing the database</a>, I considered the requirements set out in all four parts. As mentioned above, I determined that a many-to-many relation between students and lessons was not necessary for modelling student progress in this problem because progress was to be represented simply as a lesson and part number. This still left me with various options for how to model student progress however. In order of rising complexity:</p>
+<ol><li>
+<p>Each student and their progress could be recorded in a single "student"  table. In this model, lessons and lesson parts could both be numerical fields.</p>
 </li><li>
-<p>Deployment instructions</p>
+<p>Lessons and students could be modelled separately, but lesson parts could be  tracked via a number (as in 1, above). In this model, a student would have  a many-to-one association with a lesson, and a numrical lesson number field.</p>
 </li><li>
-<p>...</p>
-</li></ul>
+<p>Lessons, lesson parts and students could all be modelled separately. In  this model, lesson parts have a many-to-one relation to lessons, and  students have a many-to-one relation to lessons.</p>
+</li></ol>
+
+<p>I determined that (1) would require hard-coding the logic for incrementing a student&#39;s progress in Part 3, as the number of lessons and lesson parts would not be modelled in the database. This in turn would mean that we could not easily meet the requirements of Part 4 of the test, where the basic assumptions about the number of lesson parts is altered, except by altering the hard-coded logic. This seemed to go against the spirit of Part 4 where it says “ensure the system will still work” (i.e. without alterations). On this basis I decided that (1) was not sufficient for modelling the problem.</p>
+
+<p>I next considered (2). In this case, each lesson in the database could have a “number of parts” field, which would give us the necessary flexibility to implement Part 3 without hard-coding in a way that breaks in Part 4. However, I decided that this model was not good database design: the part-number information recorded in every student record would be meaningful only in the context of the lesson association, and this meant that the data were not properly normalised.</p>
+
+<p>For this reason, I picked option 3.</p>
+
+<p><img src="images/erd.png"></p>
+
+<h3 id="label-Part+1">Part 1</h3>
+
+<h4 id="label-Setting+a+student-27s+progress">Setting a student&#39;s progress</h4>
+
+<p>As discussed above, I interpretted the requirement around setting a student&#39;s progress to mean that there needed to be a web interface where students and their associated current lesson + lesson part could be set. In addition to the lesson information, I decided to add a very basic “name” field to students, just as “window dressing”.</p>
+
+<p>To make this interface, I started with a <a href="https://guides.rubyonrails.org/command_line.html#rails-generate">Rails scaffold</a>. This gave me a super-simple CRUD interface for viewing students and altering their details (initially just their name). I then modified this interface to include a drop-down that allowed the current lesson and llesson part of each student to be set, and I included this in the “index” page (the page that shows the list of students).</p>
+
+<p>I wrote view, controller and request specs in RSpec to ensure that data were displayed correctly, and that data could be set. When these specs all passed, I considered Part 1A to be implemented.</p>
+
+<h4 id="label-The+JSON+representation+of+the+student">The JSON representation of the student</h4>
+
+<p>The scaffold above helpfully included JSON routes also using <a href="https://github.com/rails/jbuilder">JBuilder</a>. In a real-world application I would put a RESTful JSON API into a completely separate route (e.g. <code>/api/v1/...</code>), but as this was not called for by the brief, I determined to simply take the existing JBuilder template for viewing a student, and to simply add in the lesson and lesson part data that constitute “progress” in this model.</p>
+
+<p>Although at a model level, students are associated with lesson parts, and lesson parts are associated with lessons, I somewhat flattened this in the JSON, so that the student appears to be associated with boththe lesson and the lesson part directly. This seemed to me to be easier to parse for someone consuming the data who is not familiar with the underlying database model.</p>
+
+<p>Again, I wrote view and request specs to check that the right JSON was returned for different types of data, and considered the feature implemented once the tests had passed.</p>
+
+<h2 id="label-Licence">Licence</h2>
+
+<p><a href="LICENSE">MIT Licence</a></p>
+<hr>
+
+<p><sup><a id="foottext-1" href="#footmark-1">1</a></sup> It should be trivial to switch to another database engine. The   `create_lesson_parts` migration currently includes some hand-written SQLite   that would need to be fixed, but there are no other raw SQL statements.</p>
 </div></div>
 
       <div id="footer">
-  Generated on Sun Aug 18 15:09:02 2019 by
+  Generated on Sun Aug 18 18:34:42 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.6.3).
 </div>
