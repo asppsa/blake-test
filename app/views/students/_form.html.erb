@@ -1,7 +1,6 @@
 <%= render 'person/form', person: student, name: 'student', back: students_path do |form| %>
-
   <div class="field">
-    <%= form.label :lesson_part, 'Current Lesson', class: 'label' %>
+    <%= form.label :lesson_part_id, 'Current Lesson', class: 'label' %>
     <div class="control">
       <div class="select">
         <%= form.grouped_collection_select :lesson_part_id, lessons, :parts, :display_number, :id, :display_number, include_blank: "No Current Lesson" %>
@@ -9,4 +8,12 @@
     </div>
   </div>
 
+  <div class="field">
+    <%= form.label :teacher_id, 'Teacher', class: 'label' %>
+    <div class="control">
+      <div class="select">
+        <%= form.collection_select :teacher_id, teachers, :id, :name, include_blank: '<No Teacher>' %>
+      </div>
+    </div>
+  </div>
 <% end %>

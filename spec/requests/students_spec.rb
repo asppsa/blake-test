@@ -64,12 +64,11 @@ RSpec.describe 'Students', type: :request do
     let(:person) { student }
     include_examples 'a name setter'
 
-    context 'with a name and lesson part' do
+    context 'with a lesson part' do
       let(:lesson_part) { create(:lesson_part) }
       let(:data) { { name: 'A Testing', lesson_part_id: lesson_part.id } }
 
       it 'sets the student\'s data' do
-        expect(student.reload.name).to eq 'A Testing'
         expect(student.lesson_part).to eq lesson_part
       end
 
@@ -78,11 +77,12 @@ RSpec.describe 'Students', type: :request do
       end
     end
 
-    context 'with no lesson part' do
-      let(:data) { { name: 'A Testing', lesson_part_id: '' } }
+    context 'with a teacher' do
+      let(:teacher) { create(:teacher) }
+      let(:data) { { name: 'A Testing', teacher_id: teacher.id.to_s } }
 
-      it 'unsets the student\'s lesson part' do
-        expect(student.reload.lesson_part).to be_nil
+      it 'sets the student\'s teacher' do
+        expect(student.teacher).to eq teacher
       end
     end
   end
@@ -97,11 +97,35 @@ RSpec.describe 'Students', type: :request do
   end
 
   describe 'PUT /student/:id' do
-    before { put student_path(student.id), params: { student: data } }
+    before do
+      put student_path(student.id), params: { student: data }
+      student.reload
+    end
 
     context 'with a student with a lesson' do
       let(:student) { create(:student_with_lesson) }
       it_behaves_like 'a student data setter'
+
+      context 'with a blank lesson part param' do
+        let(:data) { { lesson_part_id: '' } }
+
+        it 'unsets the student\'s lesson part' do
+          expect(student.lesson_part).to be_nil
+        end
+      end
+    end
+
+    context 'with a student with a teacher' do
+      let(:student) { create(:student_with_teacher) }
+      it_behaves_like 'a student data setter'
+
+      context 'with a blank teacher param' do
+        let(:data) { { teacher_id: '' } }
+
+        it 'unsets the student\'s teacher' do
+          expect(student.teacher).to be_nil
+        end
+      end
     end
 
     context 'with a student without a lesson' do
