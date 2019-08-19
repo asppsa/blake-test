@@ -1,0 +1,23 @@
+<h1 class="title"><%= @teacher.name %>'s students</h1>
+
+<% if @students.empty? %>
+  <div class="notification is-warning">This teacher has no students</div>
+<% else %>
+  <table class="table is-striped is-hoverable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Current Lesson</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @students.each do |student| %>
+        <tr>
+          <td><%= student.name %></td>
+          <td><%= student.lesson_part ? student.lesson_part.display_number : 'No current lesson' %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

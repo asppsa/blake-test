@@ -10,6 +10,10 @@ RSpec.describe TeachersController, type: :routing do
       expect(get: '/teachers/new').to route_to('teachers#new')
     end
 
+    it 'routes to #students' do
+      expect(get: '/teachers/1/students').to route_to('teachers#students', id: '1')
+    end
+
     it 'routes to #show' do
       expect(get: '/teachers/1').to route_to('teachers#show', id: '1')
     end
