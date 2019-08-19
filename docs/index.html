@@ -135,7 +135,7 @@ expected and no students progress will be lost
 </code></pre>
 </li></ol>
 
-<p>In place of (3), you can alternatively run the <code>db:setup</code> task, but this will skip applying foreign keys (because these are not recorded in <code>db/schema.rb</code>). The <code>db:seed</code> stage will add 100 lessons with 3 parts each into the database.</p>
+<p>In place of (3), you can alternatively run the <code>db:setup</code> task, but this will skip applying foreign keys (because these are not recorded in <code>db/schema.rb</code>). The <code>db:seed</code> stage will add 100 lessons with 3 parts each into the database. There&#39;s no human interface for adding these otherwise.</p>
 
 <h2 id="label-Launching">Launching</h2>
 
@@ -307,25 +307,30 @@ expected and no students progress will be lost
 
 <h3 id="label-Part+3">Part 3</h3>
 
-<p>I have not implemented part 3 (yet!). My plan for this is to add a simple method to the <code>Student</code> model called <code>#advance_lesson</code>. This would perform the following business logic:</p>
+<p>I have not implemented part 3 (yet!). My plan for this is to add a simple method to the <code>Student</code> model called <code>#advance_lesson</code>, and <code>#next</code> methods to <code>Lesson</code> and <code>LessonPart</code>.</p>
+<ul><li>
+<p><code>Lesson#next</code> would simply return the <code>Lesson</code> with the next largest  <code>#number</code> (i.e. minimum number that is larger than x), or <code>nil</code>.</p>
+</li><li>
+<p><code>LessonPart#next</code> would return either the next lesson part in the current  lesson, or the first lesson part of the next one (or <code>nil</code>).</p>
+</li></ul>
+
+<p>The <code>#advance_lesson</code> method would perform the following business logic:</p>
 <ol><li>
-<p>If the student has no current lesson, advance them to lesson 1, part 1.</p>
+<p>If the student has no current lesson, advance them to the first part of the  first lesson.</p>
 </li><li>
 <p>Otherwise,</p>
 <ol><li>
-<p>Look for the next lesson part within the current lesson. If there is one, set this on the student, and return.</p>
+<p>Advance to the next lesson part (using <code>LessonPart#next</code>), if there is one.</p>
 </li><li>
-<p>Otherwise, look for the next lesson. If there is one, and it has lesson parts, set its first lesson part on the student and return.</p>
-</li><li>
-<p>Otherwise, there are no more lessons. Throw an exception.</p>
+<p>If there are no more lessons, throw an exception.</p>
 </li></ol>
 </li></ol>
 
-<p>This would be implemented purely as a model method with corresponding specs for the various options outlined. An optional extra could be to add an “Advance” button somewhere in the interface, but this isn&#39;t called for by the brief. Instructions for using the method could involve launching the Rails console.</p>
+<p>This would be implemented purely as model methods with corresponding specs for the various options outlined. An optional extra could be to add an “Advance” button somewhere in the interface, but this isn&#39;t called for by the brief. Instructions for using the method could involve launching the Rails console.</p>
 
 <p>A test for this should include setting up the 100 lessons with parts, and ensuring that the student can advance all the way to the end.</p>
 
-<p>It would be noted here that in the real world a method like this should probably be moved into a separate class/module (e.g. using <a href="https://dry-rb.org/gems/dry-monads/">dry-monads</a>), because in a real-world app, storing this kind of logic in the model results in “fat models”, but there is no risk of a fat model in this case.</p>
+<p>It would be noted here that in the real world a method like this could be moved into a separate class/module (e.g. using <a href="https://dry-rb.org/gems/dry-monads/">dry-monads</a>), because in a real-world app, storing this kind of logic in the model can result in “fat models”, but that there is no risk of a fat model in this case.</p>
 
 <h3 id="label-Part+4">Part 4</h3>
 
@@ -345,7 +350,7 @@ expected and no students progress will be lost
 </div></div>
 
       <div id="footer">
-  Generated on Mon Aug 19 15:30:04 2019 by
+  Generated on Mon Aug 19 15:54:15 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.6.3).
 </div>

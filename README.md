@@ -409,18 +409,24 @@ navigate between the students listing and the teachers.
 ### Part 3
 
 I have not implemented part 3 (yet!).  My plan for this is to add a simple
-method to the `Student` model called `#advance_lesson`.  This would perform the
-following business logic:
+method to the `Student` model called `#advance_lesson`, and `#next` methods to
+`Lesson` and `LessonPart`.
 
-1. If the student has no current lesson, advance them to lesson 1, part 1.
++ `Lesson#next` would simply return the `Lesson` with the next largest
+  `#number` (i.e. minimum number that is larger than x), or `nil`.
++ `LessonPart#next` would return either the next lesson part in the current
+  lesson, or the first lesson part of the next one (or `nil`).
+
+The `#advance_lesson` method would perform the following business logic:
+
+1. If the student has no current lesson, advance them to the first part of the
+   first lesson.
 2. Otherwise,
-     1. Look for the next lesson part within the current lesson.  If there is
-        one, set this on the student, and return.
-     2. Otherwise, look for the next lesson.  If there is one, and it has lesson
-        parts, set its first lesson part on the student and return.
-     3. Otherwise, there are no more lessons.  Throw an exception.
+     1. Advance to the next lesson part (using `LessonPart#next`), if there is
+        one.
+     2. If there are no more lessons, throw an exception.
 
-This would be implemented purely as a model method with corresponding specs for
+This would be implemented purely as model methods with corresponding specs for
 the various options outlined.  An optional extra could be to add an "Advance"
 button somewhere in the interface, but this isn't called for by the brief.
 Instructions for using the method could involve launching the Rails console.
@@ -428,11 +434,10 @@ Instructions for using the method could involve launching the Rails console.
 A test for this should include setting up the 100 lessons with parts, and
 ensuring that the student can advance all the way to the end.
 
-It would be noted here that in the real world a method like this should
-probably be moved into a separate class/module (e.g. using
-[dry-monads][dry-monads]), because in a real-world app, storing this kind of
-logic in the model results in "fat models", but there is no risk of a fat model
-in this case.
+It would be noted here that in the real world a method like this could be moved
+into a separate class/module (e.g. using [dry-monads][dry-monads]), because in
+a real-world app, storing this kind of logic in the model can result in "fat
+models", but that there is no risk of a fat model in this case.
 
 
 ### Part 4
