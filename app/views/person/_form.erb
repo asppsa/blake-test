@@ -1,0 +1,21 @@
+<%= form_with(model: person, local: true) do |form| %>
+  <%= render 'application/error_notification', errors: person.errors, name: name %>
+
+  <div class="field">
+    <%= form.label :name, class: 'label' %>
+    <div class="control">
+      <%= form.text_field :name, class: 'input', required: true, max: 200 %>
+    </div>
+  </div>
+
+  <%= yield form %>
+
+  <div class="field is-grouped">
+    <div class="control">
+      <%= form.submit class: 'button is-link' %>
+    </div>
+    <div class="control">
+      <%= link_to 'Back', back, class: 'button is-light' %>
+    </div>
+  </div>
+<% end %>

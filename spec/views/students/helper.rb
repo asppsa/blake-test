@@ -1,5 +1,7 @@
+require_relative '../person_helper.rb'
+
 RSpec.shared_context :view_lessons_stub do
-  let!(:lessons) { create_list(:lesson_with_parts, 100) }
+  let(:lessons) { create_list(:lesson_with_parts, 100) }
 
   # #lessons is declared as a helper_method.  This magic is required to stub
   # the helper.
@@ -11,15 +13,8 @@ RSpec.shared_context :view_lessons_stub do
 end
 
 RSpec.shared_examples 'a student form' do
-  before { render }
-
-  it 'posts to the correct place' do
-    assert_select 'form[action=?][method=?]', path, 'post'
-  end
-
-  it 'displays a name input' do
-    assert_select 'input[name=?]', 'student[name]'
-  end
+  let(:name) { 'student' }
+  include_examples 'a person form'
 
   it 'displays a drop-down listing available lessons' do
     assert_select 'select[name=?]', 'student[lesson_part_id]' do

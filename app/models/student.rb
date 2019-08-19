@@ -4,6 +4,8 @@
 # that they have progressed to.  Students can have their progress set via the
 # {#lesson_part} attribute (the {#lesson} is then delegated to {#lesson_part}).
 class Student < ApplicationRecord
+  include ::Person
+
   # @!attribute [r] id
   #   @return [Integer] the student ID.  This uniquely identifies the student.
 
@@ -13,19 +15,11 @@ class Student < ApplicationRecord
   #     that the student has made no progress.
   belongs_to :lesson_part, optional: true
 
+  # @!attribute teacher
+  #   @return [Teacher, nil] the student's {Teacher}.  This can be `nil` if the
+  #     student does not have a teacher.
+  belongs_to :teacher, optional: true
+
   # @return [Lesson, nil] the lesson that the student has progressed to.
   delegate :lesson, to: :lesson_part, allow_nil: true
-
-  # @!attribute name
-  #   @return [String] the student's (full) name.  This can be set to any
-  #     string containing alphabetic characters, hypens and spaces, up to 200
-  #     characters.  It cannot be blank, and any leading or trailing whitespace
-  #     will be stripped.
-  validates :name,
-            presence: true,
-            format: /\A[[:alpha:] -]+\z/,
-            length: { maximum: 200 }
-
-  # Make sure no trailing whitespace on names
-  before_save { self.name = name.strip }
 end

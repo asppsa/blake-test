@@ -2,7 +2,8 @@ require 'rails_helper'
 require_relative './helper.rb'
 
 RSpec.describe 'students/edit', type: :view do
-  let!(:student) { assign(:student, Student.create!(name: 'MyString')) }
+  let(:student) { create(:student) }
+  before { assign(:student, student) }
   include_context :view_lessons_stub
   let(:path) { student_path(student) }
 

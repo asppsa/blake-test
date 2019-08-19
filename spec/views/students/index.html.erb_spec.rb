@@ -1,24 +1,19 @@
 require 'rails_helper'
+require_relative '../person_helper.rb'
 
 RSpec.describe 'students/index', type: :view do
+  let(:path) { method(:student_path) }
+
   before do
     assign(:students, students)
     render
   end
 
-  shared_examples 'a list of students' do
-    it 'displays student names' do
-      assert_select 'table' do
-        students.each do |student|
-          assert_select 'td', text: student.name
-        end
-      end
-    end
-  end
-
   context 'when students have lessons' do
     let!(:students) { create_list(:student_with_lesson, 10) }
-    it_behaves_like 'a list of students'
+    let(:people) { students }
+
+    it_behaves_like 'a list of people'
 
     it 'displays students\' lesson numbers' do
       assert_select 'table' do
@@ -27,15 +22,12 @@ RSpec.describe 'students/index', type: :view do
         end
       end
     end
-
-    it 'displays a link to #new' do
-      assert_select 'a[href=?]', student_path(:new)
-    end
   end
 
   context 'when students have no lessons' do
     let!(:students) { create_list(:student, 2) }
-    it_behaves_like 'a list of students'
+    let(:people) { students }
+    it_behaves_like 'a list of people'
 
     it 'displays "No current lesson"' do
       assert_select 'table' do

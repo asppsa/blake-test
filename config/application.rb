@@ -31,5 +31,8 @@ module BlakeTest
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    # Autoload classes in the lib folder
+    config.autoload_paths << Rails.root.join('lib')
   end
 end

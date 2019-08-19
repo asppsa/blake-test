@@ -1,6 +1,4 @@
-<% unless notice.blank? %>
-  <div class="notification is-info" id="notice"><%= notice %></div>
-<% end %>
+<%= render 'application/notice', notice: notice %>
 
 <h1 class="title">Students</h1>
 
