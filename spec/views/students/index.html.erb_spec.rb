@@ -13,7 +13,8 @@ RSpec.describe 'students/index', type: :view do
     let!(:students) { create_list(:student_with_lesson, 10) }
     let(:people) { students }
 
-    it_behaves_like 'a list of people'
+    it_behaves_like 'a list of editable people'
+    include_examples :link_to_new
 
     it 'displays students\' lesson numbers' do
       assert_select 'table' do
@@ -27,7 +28,9 @@ RSpec.describe 'students/index', type: :view do
   context 'when students have no lessons' do
     let!(:students) { create_list(:student, 2) }
     let(:people) { students }
-    it_behaves_like 'a list of people'
+
+    it_behaves_like 'a list of editable people'
+    include_examples :link_to_new
 
     it 'displays "No current lesson"' do
       assert_select 'table' do

@@ -113,4 +113,12 @@ RSpec.describe TeachersController, type: :controller do
       expect(response).to redirect_to(teachers_url)
     end
   end
+
+  describe 'GET #students' do
+    it 'returns a success response' do
+      teacher = Teacher.create! valid_attributes
+      get :students, params: { id: teacher.to_param }, session: valid_session
+      expect(response).to be_successful
+    end
+  end
 end

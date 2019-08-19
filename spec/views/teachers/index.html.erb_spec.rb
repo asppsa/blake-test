@@ -11,5 +11,14 @@ RSpec.describe 'teachers/index', type: :view do
     render
   end
 
-  it_behaves_like 'a list of people'
+  it_behaves_like 'a list of editable people'
+  include_examples :link_to_new
+
+  it 'links to teachers\'s student reports' do
+    assert_select 'table' do
+      people.each do |person|
+        assert_select 'td a[href=?]', path.call(person) + '/students'
+      end
+    end
+  end
 end

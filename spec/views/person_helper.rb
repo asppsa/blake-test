@@ -6,6 +6,10 @@ RSpec.shared_examples 'a list of people' do
       end
     end
   end
+end
+
+RSpec.shared_examples 'a list of editable people' do
+  include_examples 'a list of people'
 
   it 'links to people\'s edit pages' do
     assert_select 'table' do
@@ -14,7 +18,9 @@ RSpec.shared_examples 'a list of people' do
       end
     end
   end
+end
 
+RSpec.shared_examples :link_to_new do
   it 'displays a link to #new' do
     assert_select 'a[href=?]', path.call(:new)
   end

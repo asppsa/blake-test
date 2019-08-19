@@ -55,4 +55,31 @@ RSpec.describe 'Teachers', type: :request do
     it_behaves_like 'a name setter'
     include_examples :invalid_name_redirect, :edit
   end
+
+  describe 'GET /teacher/:id/students' do
+    shared_examples :students_template do
+      before { get students_teacher_path(teacher) }
+
+      it 'renders the students template' do
+        get teachers_path
+        expect(response).to have_http_status(200)
+        expect(response).to render_template(:index)
+      end
+    end
+
+    context 'when the teacher has no students' do
+      let(:teacher) { create(:teacher) }
+      include_examples :students_template
+    end
+
+    context 'when the teacher has students' do
+      let(:teacher) { create(:teacher_with_students) }
+      include_examples :students_template
+    end
+
+    context 'when the teacher has students with lessons' do
+      let(:teacher) { create(:teacher_with_students_and_lessons) }
+      include_examples :students_template
+    end
+  end
 end

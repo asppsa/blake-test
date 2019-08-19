@@ -3,6 +3,24 @@ FactoryBot.define do
 
   factory :teacher do
     name { generate(:teacher_name) }
+
+    factory :teacher_with_students_count do
+      transient do
+        students_count { 20 }
+      end
+
+      factory :teacher_with_students do
+        after :create do |teacher, evaluator|
+          create_list(:student, evaluator.students_count, teacher: teacher)
+        end
+      end
+
+      factory :teacher_with_students_and_lessons do
+        after :create do |teacher, evaluator|
+          create_list(:student_with_lesson, evaluator.students_count, teacher: teacher)
+        end
+      end
+    end
   end
 
   sequence(:lesson_number, &:itself)

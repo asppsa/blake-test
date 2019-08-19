@@ -1,6 +1,6 @@
 # This handles CRUD operations for teachers
 class TeachersController < ApplicationController
-  before_action :set_teacher, only: %i[show edit update destroy]
+  before_action :set_teacher, only: %i[show edit update destroy students]
 
   # GET /teachers
   # GET /teachers.json
@@ -62,6 +62,11 @@ class TeachersController < ApplicationController
       format.html { redirect_to teachers_url, notice: 'Teacher was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  # GET /teachers/1/students
+  def students
+    @students = @teacher.students.order(:name).includes(lesson_part: :lesson).all
   end
 
   private

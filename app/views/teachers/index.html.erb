@@ -16,6 +16,7 @@
         <td><%= teacher.name %></td>
         <td>
           <div class="buttons has-addons">
+            <%= link_to 'Students', students_teacher_path(teacher), class: 'button' %>
             <%= link_to 'Edit', edit_teacher_path(teacher), class: 'button' %>
             <%= link_to 'Destroy', teacher, method: :delete, data: { confirm: 'Are you sure?' }, class: 'button' %>
           </div>
