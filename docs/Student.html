@@ -91,6 +91,11 @@
   
   
   
+  <dl>
+      <dt>Includes:</dt>
+      <dd><span class='object_link'><a href="Person.html" title="Person (module)">Person</a></span></dd>
+  </dl>
+  
   
 
   
@@ -108,7 +113,7 @@
     
 <p>This models students in our app.</p>
 
-<p>Each Student has a <span class='object_link'><a href="#name-instance_method" title="Student#name (method)">#name</a></span>, and may have an associated <span class='object_link'><a href="Lesson.html" title="Lesson (class)">Lesson</a></span> and <span class='object_link'><a href="LessonPart.html" title="LessonPart (class)">LessonPart</a></span> that they have progressed to.  Students can have their progress set via the <span class='object_link'><a href="#lesson_part-instance_method" title="Student#lesson_part (method)">#lesson_part</a></span> attribute (the <span class='object_link'><a href="#lesson-instance_method" title="Student#lesson (method)">#lesson</a></span> is then delegated to <span class='object_link'><a href="#lesson_part-instance_method" title="Student#lesson_part (method)">#lesson_part</a></span>).</p>
+<p>Each Student has a <span class='object_link'><a href="Person.html#name-instance_method" title="Person#name (method)">Person#name</a></span> and may also have a <span class='object_link'><a href="Teacher.html" title="Teacher (class)">Teacher</a></span>.  Students can progress through <span class='object_link'><a href="Lesson.html" title="Lesson (class)">Lesson</a></span>s and <span class='object_link'><a href="LessonPart.html" title="LessonPart (class)">LessonPart</a></span>s.  This progress is recorded via the <span class='object_link'><a href="#lesson_part-instance_method" title="Student#lesson_part (method)">#lesson_part</a></span> attribute (the <span class='object_link'><a href="#lesson-instance_method" title="Student#lesson (method)">#lesson</a></span> is then delegated to <span class='object_link'><a href="#lesson_part-instance_method" title="Student#lesson_part (method)">#lesson_part</a></span>).</p>
 
 
   </div>
@@ -182,7 +187,7 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#name-instance_method" title="#name (instance method)">#<strong>name</strong>  &#x21d2; String </a>
+      <a href="#teacher-instance_method" title="#teacher (instance method)">#<strong>teacher</strong>  &#x21d2; Teacher<sup>?</sup> </a>
     
 
     
@@ -200,7 +205,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>The student&#39;s (full) name.</p>
+<p>The student&#39;s <span class='object_link'><a href="Teacher.html" title="Teacher (class)">Teacher</a></span>.</p>
 </div></span>
   
 </li>
@@ -209,6 +214,11 @@
   </ul>
 
 
+
+  
+  
+  <h3 class="inherited">Attributes included from <span class='object_link'><a href="Person.html" title="Person (module)">Person</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Person.html#name-instance_method" title="Person#name (method)">#name</a></span></p>
 
 
   
@@ -246,6 +256,17 @@
     </ul>
   
 
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="Person.html" title="Person (module)">Person</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Person.html#included-class_method" title="Person.included (method)">included</a></span></p>
 
   
   
@@ -306,7 +327,7 @@
 </pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/student.rb', line 7</span>
+      <pre class="code"><span class="info file"># File 'app/models/student.rb', line 10</span>
 
 </pre>
     </td>
@@ -360,10 +381,10 @@
       <pre class="lines">
 
 
-14</pre>
+17</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/student.rb', line 14</span>
+      <pre class="code"><span class="info file"># File 'app/models/student.rb', line 17</span>
 
 <span class='id identifier rubyid_belongs_to'>belongs_to</span> <span class='symbol'>:lesson_part</span><span class='comma'>,</span> <span class='label'>optional:</span> <span class='kw'>true</span></pre>
     </td>
@@ -372,11 +393,11 @@
 </div>
     
       
-      <span id="name=-instance_method"></span>
+      <span id="teacher=-instance_method"></span>
       <div class="method_details ">
-  <h3 class="signature " id="name-instance_method">
+  <h3 class="signature " id="teacher-instance_method">
   
-    #<strong>name</strong>  &#x21d2; <tt>String</tt> 
+    #<strong>teacher</strong>  &#x21d2; <tt><span class='object_link'><a href="Teacher.html" title="Teacher (class)">Teacher</a></span></tt><sup>?</sup> 
   
 
   
@@ -385,7 +406,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns the student&#39;s (full) name.  This can be set to any string containing alphabetic characters, hypens and spaces, up to 200 characters.  It cannot be blank, and any leading or trailing whitespace will be stripped.</p>
+<p>Returns the student&#39;s <span class='object_link'><a href="Teacher.html" title="Teacher (class)">Teacher</a></span>.  This can be `nil` if the student does not have a teacher.</p>
 
 
   </div>
@@ -398,13 +419,13 @@
     <li>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Teacher.html" title="Teacher (class)">Teacher</a></span></tt>, <tt>nil</tt>)</span>
       
       
       
         &mdash;
         <div class='inline'>
-<p>the student&#39;s (full) name.  This can be set to any string containing alphabetic characters, hypens and spaces, up to 200 characters.  It cannot be blank, and any leading or trailing whitespace will be stripped.</p>
+<p>the student&#39;s <span class='object_link'><a href="Teacher.html" title="Teacher (class)">Teacher</a></span>.  This can be `nil` if the student does not have a teacher.</p>
 </div>
       
     </li>
@@ -417,18 +438,12 @@
       <pre class="lines">
 
 
-24
-25
-26
-27</pre>
+22</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/student.rb', line 24</span>
+      <pre class="code"><span class="info file"># File 'app/models/student.rb', line 22</span>
 
-<span class='id identifier rubyid_validates'>validates</span> <span class='symbol'>:name</span><span class='comma'>,</span>
-<span class='label'>presence:</span> <span class='kw'>true</span><span class='comma'>,</span>
-<span class='label'>format:</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\A[[:alpha:] -]+\z</span><span class='regexp_end'>/</span></span><span class='comma'>,</span>
-<span class='label'>length:</span> <span class='lbrace'>{</span> <span class='label'>maximum:</span> <span class='int'>200</span> <span class='rbrace'>}</span></pre>
+<span class='id identifier rubyid_belongs_to'>belongs_to</span> <span class='symbol'>:teacher</span><span class='comma'>,</span> <span class='label'>optional:</span> <span class='kw'>true</span></pre>
     </td>
   </tr>
 </table>
@@ -485,10 +500,10 @@
       <pre class="lines">
 
 
-17</pre>
+25</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/student.rb', line 17</span>
+      <pre class="code"><span class="info file"># File 'app/models/student.rb', line 25</span>
 
 <span class='id identifier rubyid_delegate'>delegate</span> <span class='symbol'>:lesson</span><span class='comma'>,</span> <span class='label'>to:</span> <span class='symbol'>:lesson_part</span><span class='comma'>,</span> <span class='label'>allow_nil:</span> <span class='kw'>true</span></pre>
     </td>
@@ -501,7 +516,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Aug 18 20:27:53 2019 by
+  Generated on Mon Aug 19 15:30:06 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.6.3).
 </div>

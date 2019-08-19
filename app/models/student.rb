@@ -1,10 +1,11 @@
 # This models students in our app.
 #
-# Each Student has a {#name}, and may have an associated {Lesson} and {LessonPart}
-# that they have progressed to.  Students can have their progress set via the
-# {#lesson_part} attribute (the {#lesson} is then delegated to {#lesson_part}).
+# Each Student has a {#name} and may also have a {Teacher}.  Students can
+# progress through {Lesson}s and {LessonPart}s.  This progress is recorded via
+# the {#lesson_part} attribute (the {#lesson} is then delegated to
+# {#lesson_part}).
 class Student < ApplicationRecord
-  include ::Person
+  include Person
 
   # @!attribute [r] id
   #   @return [Integer] the student ID.  This uniquely identifies the student.

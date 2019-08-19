@@ -76,7 +76,7 @@
   
   <dl>
     <dt>Included in:</dt>
-    <dd><span class='object_link'><a href="Student.html" title="Student (class)">Student</a></span></dd>
+    <dd><span class='object_link'><a href="Student.html" title="Student (class)">Student</a></span>, <span class='object_link'><a href="Teacher.html" title="Teacher (class)">Teacher</a></span></dd>
   </dl>
   
 
@@ -163,7 +163,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>This calls the relevant ActiveRecord methods to apply <span class='object_link'><a href="#name-instance_method" title="Person#name (method)">#name</a></span> validation.</p>
+</div></span>
   
 </li>
 
@@ -221,28 +223,12 @@
       <pre class="lines">
 
 
-9
-10
-11
-12
-13
-14
-15
-16
-17</pre>
+</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/person.rb', line 9</span>
+      <pre class="code"><span class="info file"># File 'lib/person.rb', line 4</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_included'>included</span><span class='lparen'>(</span><span class='id identifier rubyid_mod'>mod</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_mod'>mod</span><span class='period'>.</span><span class='id identifier rubyid_validates'>validates</span> <span class='symbol'>:name</span><span class='comma'>,</span>
-                <span class='label'>presence:</span> <span class='kw'>true</span><span class='comma'>,</span>
-                <span class='label'>format:</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\A[[:alpha:] -]+\z</span><span class='regexp_end'>/</span></span><span class='comma'>,</span>
-                <span class='label'>length:</span> <span class='lbrace'>{</span> <span class='label'>maximum:</span> <span class='int'>200</span> <span class='rbrace'>}</span>
-
-  <span class='comment'># Make sure no trailing whitespace on names
-</span>  <span class='id identifier rubyid_mod'>mod</span><span class='period'>.</span><span class='id identifier rubyid_before_save'>before_save</span> <span class='lbrace'>{</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span> <span class='rbrace'>}</span>
-<span class='kw'>end</span></pre>
+</pre>
     </td>
   </tr>
 </table>
@@ -264,24 +250,35 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>This calls the relevant ActiveRecord methods to apply <span class='object_link'><a href="#name-instance_method" title="Person#name (method)">#name</a></span> validation.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-9
-10
 11
 12
 13
 14
 15
 16
-17</pre>
+17
+18
+19</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/person.rb', line 9</span>
+      <pre class="code"><span class="info file"># File 'lib/person.rb', line 11</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_included'>included</span><span class='lparen'>(</span><span class='id identifier rubyid_mod'>mod</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_mod'>mod</span><span class='period'>.</span><span class='id identifier rubyid_validates'>validates</span> <span class='symbol'>:name</span><span class='comma'>,</span>
@@ -302,7 +299,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Aug 18 20:56:04 2019 by
+  Generated on Mon Aug 19 15:30:06 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.6.3).
 </div>

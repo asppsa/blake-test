@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  root to: 'pages#main'
+
+  resources :students
   resources :teachers do
     member do
       get 'students'
@@ -7,8 +10,4 @@ Rails.application.routes.draw do
 
   # This adds the APIPie interface at /apipie
   apipie
-
-  # Add this redirect for simplicity
-  get '/', to: redirect('/students')
-  resources :students
 end
