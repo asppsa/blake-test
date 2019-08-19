@@ -29,4 +29,34 @@ RSpec.describe Lesson, type: :model do
       expect(subject.parts.pluck(:number)).to eq unordered_numbers.sort
     end
   end
+
+  describe '#next' do
+    context 'when there is a next lesson' do
+      let(:lessons) { create_list(:lesson, 100) }
+
+      it 'returns the next lesson' do
+        99.times do
+          lesson = lessons.shift
+          expect(lesson.next).to eq lessons.first
+          expect(lesson.next.number).to eq lesson.number + 1
+        end
+      end
+    end
+
+    context 'when this is the last lesson' do
+      let(:lesson) { create(:lesson) }
+
+      it 'returns nil' do
+        expect(lesson.next).to be_nil
+      end
+    end
+
+    context 'when there is a gap' do
+      let(:lessons) { [create(:lesson, number: 1), create(:lesson, number: 3)] }
+
+      it 'returns nil' do
+        expect(lessons.first.next).to be_nil
+      end
+    end
+  end
 end
