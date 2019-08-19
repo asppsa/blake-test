@@ -1,6 +1,4 @@
-<% unless notice.blank? %>
-  <div class="notification is-info" id="notice"><%= notice %></div>
-<% end %>
+<%= render 'application/notice', notice: notice %>
 
 <h1 class="title">Students</h1>
 
@@ -9,6 +7,7 @@
     <tr>
       <th>Name</th>
       <th>Current Lesson</th>
+      <th>Teacher</th>
       <th></th>
     </tr>
   </thead>
@@ -18,6 +17,7 @@
       <tr>
         <td><%= student.name %></td>
         <td><%= student.lesson_part ? student.lesson_part.display_number : 'No current lesson' %></td>
+        <td><%= student.teacher ? student.teacher.name : 'No teacher' %></td>
         <td>
           <div class="buttons has-addons">
             <%= link_to 'Edit', edit_student_path(student), class: 'button' %>

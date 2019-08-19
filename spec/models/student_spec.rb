@@ -1,39 +1,11 @@
 require 'rails_helper'
+require_relative './person_helper.rb'
 
 RSpec.describe Student, type: :model do
   let(:lesson) { Lesson.create! number: 1 }
   let(:lesson_part) { LessonPart.create! number: 1, lesson: lesson }
 
-  describe 'name' do
-    it 'is required by database constraints' do
-      expect { Student.create!(name: 'test').update_column(:name, nil) }
-        .to raise_error ActiveRecord::NotNullViolation
-    end
-
-    it 'validates presence' do
-      expect(Student.create(name: nil)).to be_invalid
-      expect(Student.create(name: '')).to be_invalid
-    end
-
-    it 'validates the alphabetic contents' do
-      expect(Student.create(name: 'Jim')).to be_valid
-      expect(Student.create(name: 'Jim Jones')).to be_valid
-      expect(Student.create(name: '1234Jim')).not_to be_valid
-    end
-
-    it 'validates the length' do
-      expect(Student.create(name: 'x' * 200)).to be_valid
-      expect(Student.create(name: 'x' * 201)).to be_invalid
-    end
-
-    it 'allows reading and writing a name' do
-      student = Student.create!(name: 'Jim')
-      expect { student.name = 'Jim Jones' }
-        .to change { student.name }
-        .from('Jim')
-        .to('Jim Jones')
-    end
-  end
+  it_behaves_like 'a person'
 
   describe 'lesson_part' do
     shared_examples :lesson_part do

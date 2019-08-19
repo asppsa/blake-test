@@ -1,0 +1,30 @@
+<%= render 'application/notice', notice: notice %>
+
+<h1 class="title">Teachers</h1>
+
+<table class="table is-striped is-hoverable">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @teachers.each do |teacher| %>
+      <tr>
+        <td><%= teacher.name %></td>
+        <td>
+          <div class="buttons has-addons">
+            <%= link_to 'Edit', edit_teacher_path(teacher), class: 'button' %>
+            <%= link_to 'Destroy', teacher, method: :delete, data: { confirm: 'Are you sure?' }, class: 'button' %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Teacher', new_teacher_path, class: 'button is-link' %>

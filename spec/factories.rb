@@ -1,4 +1,10 @@
 FactoryBot.define do
+  sequence(:teacher_name) { |n| "Teacher #{n.humanize}" }
+
+  factory :teacher do
+    name { generate(:teacher_name) }
+  end
+
   sequence(:lesson_number, &:itself)
   sequence(:lesson_part_number, &:itself)
 
@@ -27,6 +33,15 @@ FactoryBot.define do
     name { generate(:student_name) }
 
     factory :student_with_lesson do
+      lesson_part
+    end
+
+    factory :student_with_teacher do
+      teacher
+    end
+
+    factory :student_with_teacher_and_lesson do
+      teacher
       lesson_part
     end
   end

@@ -1,25 +1,22 @@
+require_relative '../person_helper.rb'
+
 RSpec.shared_context :view_lessons_stub do
-  let!(:lessons) { create_list(:lesson_with_parts, 100) }
+  let(:lessons) { create_list(:lesson_with_parts, 100) }
+  let(:teachers) { create_list(:teacher, 100) }
 
   # #lessons is declared as a helper_method.  This magic is required to stub
   # the helper.
   before do
     without_partial_double_verification do
       allow(view).to receive(:lessons).and_return(lessons)
+      allow(view).to receive(:teachers).and_return(teachers)
     end
   end
 end
 
 RSpec.shared_examples 'a student form' do
-  before { render }
-
-  it 'posts to the correct place' do
-    assert_select 'form[action=?][method=?]', path, 'post'
-  end
-
-  it 'displays a name input' do
-    assert_select 'input[name=?]', 'student[name]'
-  end
+  let(:name) { 'student' }
+  include_examples 'a person form'
 
   it 'displays a drop-down listing available lessons' do
     assert_select 'select[name=?]', 'student[lesson_part_id]' do
@@ -30,6 +27,15 @@ RSpec.shared_examples 'a student form' do
             assert_select 'option[value=?]', part.id.to_s
           end
         end
+      end
+    end
+  end
+
+  it 'displays a drop-down listing of teachers' do
+    assert_select 'select[name=?]', 'student[teacher_id]' do
+      assert_select 'option[value=""]', '<No Teacher>'
+      teachers.each do |teacher|
+        assert_select 'option[value=?]', teacher.id.to_s
       end
     end
   end

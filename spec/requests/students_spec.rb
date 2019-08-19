@@ -1,4 +1,5 @@
 require 'rails_helper'
+require_relative './person_helper.rb'
 
 RSpec.describe 'Students', type: :request do
   describe 'GET /students' do
@@ -60,19 +61,14 @@ RSpec.describe 'Students', type: :request do
   end
 
   shared_examples 'a student data setter' do
-    context 'with a name and lesson part' do
+    let(:person) { student }
+    include_examples 'a name setter'
+
+    context 'with a lesson part' do
       let(:lesson_part) { create(:lesson_part) }
-      let(:params) do
-        {
-          student: {
-            name: 'A Testing',
-            lesson_part_id: lesson_part.id
-          }
-        }
-      end
+      let(:data) { { name: 'A Testing', lesson_part_id: lesson_part.id } }
 
       it 'sets the student\'s data' do
-        expect(student.reload.name).to eq 'A Testing'
         expect(student.lesson_part).to eq lesson_part
       end
 
@@ -81,58 +77,62 @@ RSpec.describe 'Students', type: :request do
       end
     end
 
-    context 'with no lesson part' do
-      let(:params) { { student: { name: 'A Testing', lesson_part_id: '' } } }
+    context 'with a teacher' do
+      let(:teacher) { create(:teacher) }
+      let(:data) { { name: 'A Testing', teacher_id: teacher.id.to_s } }
 
-      it 'unsets the student\'s lesson part' do
-        expect(student.reload.lesson_part).to be_nil
-      end
-    end
-
-    context 'with whitespace in the name' do
-      let(:params) { { student: { name: 'testing whitespace       ' } } }
-      it 'trims the whitespace' do
-        expect(student.reload.name).to eq 'testing whitespace'
+      it 'sets the student\'s teacher' do
+        expect(student.teacher).to eq teacher
       end
     end
   end
 
   describe 'POST /students' do
     let(:student) { Student.last }
-    before { post students_path, params: params }
+
+    before { post students_path, params: { student: data } }
+
     it_behaves_like 'a student data setter'
-
-    context 'with an invalid request' do
-      let(:params) { { student: { name: 'a 1213' } } }
-
-      it 'displays the new template' do
-        expect(response).to have_http_status(200)
-        expect(response).to render_template(:new)
-      end
-    end
+    include_examples :invalid_name_redirect, :new
   end
 
   describe 'PUT /student/:id' do
-    before { put student_path(student.id), params: params }
+    before do
+      put student_path(student.id), params: { student: data }
+      student.reload
+    end
 
     context 'with a student with a lesson' do
       let(:student) { create(:student_with_lesson) }
       it_behaves_like 'a student data setter'
+
+      context 'with a blank lesson part param' do
+        let(:data) { { lesson_part_id: '' } }
+
+        it 'unsets the student\'s lesson part' do
+          expect(student.lesson_part).to be_nil
+        end
+      end
+    end
+
+    context 'with a student with a teacher' do
+      let(:student) { create(:student_with_teacher) }
+      it_behaves_like 'a student data setter'
+
+      context 'with a blank teacher param' do
+        let(:data) { { teacher_id: '' } }
+
+        it 'unsets the student\'s teacher' do
+          expect(student.teacher).to be_nil
+        end
+      end
     end
 
     context 'with a student without a lesson' do
       let(:student) { create(:student) }
+
       it_behaves_like 'a student data setter'
-    end
-
-    context 'with an invalid request' do
-      let(:student) { create(:student) }
-      let(:params) { { student: { name: '1 24' } } }
-
-      it 'displays the edit template' do
-        expect(response).to have_http_status(200)
-        expect(response).to render_template(:edit)
-      end
+      include_examples :invalid_name_redirect, :edit
     end
   end
 end

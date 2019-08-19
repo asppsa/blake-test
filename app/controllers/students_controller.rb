@@ -2,14 +2,14 @@
 # serializing student data to JSON.
 class StudentsController < ApplicationController
   before_action :set_student, only: %i[show edit update destroy]
-  helper_method :lessons
+  helper_method :lessons, :teachers
 
   # Index of {Student}s
   #
   # - GET /students
   # - GET /students.json
   def index
-    @students = Student.includes(lesson_part: :lesson).all
+    @students = Student.includes(:teacher, lesson_part: :lesson).all
   end
 
   def_param_group :timestamps do
@@ -113,6 +113,14 @@ class StudentsController < ApplicationController
     Lesson.includes(:parts).order(:number).all
   end
 
+  # This helper method returns a collection of all {Teacher}s in
+  # name-alphabetical order.
+  #
+  # @return [<Teacher>]
+  def teachers
+    Teacher.order(:name).all
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -122,6 +130,6 @@ class StudentsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def student_params
-    params.require(:student).permit(:name, :lesson_part_id)
+    params.require(:student).permit(:name, :lesson_part_id, :teacher_id)
   end
 end
