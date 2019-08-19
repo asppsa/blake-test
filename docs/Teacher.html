@@ -91,6 +91,11 @@
   
   
   
+  <dl>
+      <dt>Includes:</dt>
+      <dd><span class='object_link'><a href="Person.html" title="Person (module)">Person</a></span></dd>
+  </dl>
+  
   
 
   
@@ -103,26 +108,235 @@
   
 </div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>This models teachers in our app.</p>
+
+<p>A Teacher teaches zero or more <span class='object_link'><a href="#students-instance_method" title="Teacher#students (method)">#students</a></span>.</p>
 
 
-
-
-
-
-
-
-  
-  
-  
-  
-  
-  
+  </div>
+</div>
+<div class="tags">
   
 
 </div>
 
+
+
+  <h2>Instance Attribute Summary <small><a href="#" class="summary_toggle">collapse</a></small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#id-instance_method" title="#id (instance method)">#<strong>id</strong>  &#x21d2; Integer </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The teacher ID.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#students-instance_method" title="#students (instance method)">#<strong>students</strong>  &#x21d2; &lt;Student&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>A collection of <span class='object_link'><a href="Student.html" title="Student (class)">Student</a></span>s presently taught by this teacher.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+
+  
+  
+  <h3 class="inherited">Attributes included from <span class='object_link'><a href="Person.html" title="Person (module)">Person</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Person.html#name-instance_method" title="Person#name (method)">#name</a></span></p>
+
+
+
+  
+  
+  
+  
+  
+  
+  <h2>Method Summary</h2>
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="Person.html" title="Person (module)">Person</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Person.html#included-class_method" title="Person.included (method)">included</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id=""></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="id-instance_method">
+  
+    #<strong>id</strong>  &#x21d2; <tt>Integer</tt>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the teacher ID.  This uniquely identifies the teacher.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the teacher ID.  This uniquely identifies the teacher.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/teacher.rb', line 7</span>
+
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="students=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="students-instance_method">
+  
+    #<strong>students</strong>  &#x21d2; <tt>&lt;<span class='object_link'><a href="Student.html" title="Student (class)">Student</a></span>&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns a collection of <span class='object_link'><a href="Student.html" title="Student (class)">Student</a></span>s presently taught by this teacher.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>&lt;<span class='object_link'><a href="Student.html" title="Student (class)">Student</a></span>&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>a collection of <span class='object_link'><a href="Student.html" title="Student (class)">Student</a></span>s presently taught by this teacher.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+13</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/teacher.rb', line 13</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:students</span><span class='comma'>,</span> <span class='label'>dependent:</span> <span class='symbol'>:nullify</span><span class='comma'>,</span> <span class='label'>inverse_of:</span> <span class='symbol'>:teacher</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+</div>
+
       <div id="footer">
-  Generated on Sun Aug 18 20:56:04 2019 by
+  Generated on Mon Aug 19 15:30:06 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.6.3).
 </div>
