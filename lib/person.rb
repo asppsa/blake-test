@@ -6,6 +6,8 @@ module Person
   #     containing alphabetic characters, hypens and spaces, up to 200
   #     characters.  It cannot be blank, and any leading or trailing whitespace
   #     will be stripped.
+
+  # This calls the relevant ActiveRecord methods to apply {#name} validation.
   def self.included(mod)
     mod.validates :name,
                   presence: true,

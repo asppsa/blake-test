@@ -1,6 +1,6 @@
 # This models teachers in our app.
 #
-# A Teacher teaches {#students}.
+# A Teacher teaches zero or more {#students}.
 class Teacher < ApplicationRecord
   include Person
 
