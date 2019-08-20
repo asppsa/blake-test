@@ -40,7 +40,7 @@ E-Learning][blake].  The brief is as follows:
     a) the first 50 lessons now have 5 parts. Ensure the system will still work as
     expected and no students progress will be lost
 
-Currently Parts 1 and 2 are implemented.
+All parts have been implemented.
 
 ## Environments
 
@@ -149,7 +149,7 @@ as a simple table giving student names and their current lesson.
 
 ![Screenshot of the students report](images/BlakeTest4.png)
 
-### Part 3: A method to progess a student to the next lesson part
+### Parts 3 and 4: A method to progess a student to the next lesson part
 
 This is implemented via `Student#advance_lesson!`.  This is just a method --
 there is no UI for interacting with this.  Thefore, in order to test it by hand
@@ -177,6 +177,15 @@ there is no UI for interacting with this.  Thefore, in order to test it by hand
 
 Note that the database definitely needs to be seeded for this to work.  There
 is more information about `#advance_lesson!` below.
+
+If you want to hand-test that things still work when there are extra lesson
+parts (as in part 4 of the brief), you can run a rake task to add the extra
+lesson parts:
+
+    bundle exec rails blake:part4
+
+After this, you can again test the behaviour of using `#advance_lesson!` using
+the Rails console.
 
 
 ## Further documentation
@@ -480,17 +489,22 @@ occurring.
 
 ### Part 4
 
-There are two tests to be done here:
+The assumptions that were made in implementing this part are that if a student
+is part-way through the lessons when the number of parts is altered, those
+parts that are ahead of them (according to the progression rules set out in
+part 3 of the spec) now need to be covered by them.
 
-1. Test that student progression still works.  This would be done by making a
-   variant of the test mentioned in the previous section that differs in terms
-   of how many lesson parts there are.
+A rake task called `blake:part4` was added to create the additional lesson
+parts.  This is only necessary if you want to check that things work by hand,
+as the specs simulate adding extra parts separately.
 
-2. Test that adding additional lesson parts to an existing model does not
-   affect a student's progress.  Because of how the model is implemented, this
-   would only happen if the change involved deleting the existing lesson parts.
-   It should be demonstrated therefore that lesson parts can easily be added
-   without needing to delete anything.
+Specs are added to show that when the system is changed to have 5 lesson parts
+in the first fifty lessons,
+
+1. student progression still works from beginning to end; and
+
+2. a student that is part-way through first 50 lessons can continue to progress
+   through the new lessons that are in their path.
 
 ## Licence
 

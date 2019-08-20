@@ -100,7 +100,7 @@ a) the first 50 lessons now have 5 parts. Ensure the system will still work as
 expected and no students progress will be lost
 </code></pre>
 
-<p>Currently Parts 1 and 2 are implemented.</p>
+<p>All parts have been implemented.</p>
 
 <h2 id="label-Environments">Environments</h2>
 
@@ -181,7 +181,7 @@ expected and no students progress will be lost
 
 <p><img src="images/BlakeTest4.png"></p>
 
-<h3 id="label-Part+3-3A+A+method+to+progess+a+student+to+the+next+lesson+part">Part 3: A method to progess a student to the next lesson part</h3>
+<h3 id="label-Parts+3+and+4-3A+A+method+to+progess+a+student+to+the+next+lesson+part">Parts 3 and 4: A method to progess a student to the next lesson part</h3>
 
 <p>This is implemented via <code>Student#advance_lesson!</code>. This is just a method – there is no UI for interacting with this. Thefore, in order to test it by hand (as opposed to running the specs), you should use the Rails console:</p>
 
@@ -207,6 +207,13 @@ irb(main):003:0&gt; 99.times { s.advance_lesson! }
 </code></pre>
 
 <p>Note that the database definitely needs to be seeded for this to work. There is more information about <code>#advance_lesson!</code> below.</p>
+
+<p>If you want to hand-test that things still work when there are extra lesson parts (as in part 4 of the brief), you can run a rake task to add the extra lesson parts:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_exec'>exec</span> <span class='id identifier rubyid_rails'>rails</span> <span class='label'>blake:</span><span class='id identifier rubyid_part4'>part4</span>
+</code></pre>
+
+<p>After this, you can again test the behaviour of using <code>#advance_lesson!</code> using the Rails console.</p>
 
 <h2 id="label-Further+documentation">Further documentation</h2>
 
@@ -367,11 +374,15 @@ irb(main):003:0&gt; 99.times { s.advance_lesson! }
 
 <h3 id="label-Part+4">Part 4</h3>
 
-<p>There are two tests to be done here:</p>
+<p>The assumptions that were made in implementing this part are that if a student is part-way through the lessons when the number of parts is altered, those parts that are ahead of them (according to the progression rules set out in part 3 of the spec) now need to be covered by them.</p>
+
+<p>A rake task called <code>blake:part4</code> was added to create the additional lesson parts. This is only necessary if you want to check that things work by hand, as the specs simulate adding extra parts separately.</p>
+
+<p>Specs are added to show that when the system is changed to have 5 lesson parts in the first fifty lessons,</p>
 <ol><li>
-<p>Test that student progression still works. This would be done by making a  variant of the test mentioned in the previous section that differs in terms  of how many lesson parts there are.</p>
+<p>student progression still works from beginning to end; and</p>
 </li><li>
-<p>Test that adding additional lesson parts to an existing model does not  affect a student&#39;s progress. Because of how the model is implemented, this  would only happen if the change involved deleting the existing lesson parts.  It should be demonstrated therefore that lesson parts can easily be added  without needing to delete anything.</p>
+<p>a student that is part-way through first 50 lessons can continue to progress  through the new lessons that are in their path.</p>
 </li></ol>
 
 <h2 id="label-Licence">Licence</h2>
@@ -383,7 +394,7 @@ irb(main):003:0&gt; 99.times { s.advance_lesson! }
 </div></div>
 
       <div id="footer">
-  Generated on Tue Aug 20 14:50:05 2019 by
+  Generated on Tue Aug 20 16:15:30 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.6.3).
 </div>

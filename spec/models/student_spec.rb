@@ -126,14 +126,7 @@ RSpec.describe Student, type: :model do
       end
     end
 
-    context 'when there are 100 lessons with three parts each' do
-      let!(:lessons) do
-        FactoryBot.rewind_sequences
-        create_list(:lesson_with_parts, 100, parts_count: 3)
-      end
-      let(:lesson_parts) { lessons.flat_map { |lesson| lesson.parts.all } }
-      subject { create(:student) }
-
+    shared_examples :advance_lesson do |number_of_parts|
       it 'enables a student to progress through all lesson parts in order' do
         lesson_parts.each do |lesson_part|
           expect(subject.advance_lesson!).to eq lesson_part
@@ -141,8 +134,79 @@ RSpec.describe Student, type: :model do
       end
 
       it 'raises an exception if we attempt to progress beyond the last lesson' do
-        expect { (100 * 3).times { subject.advance_lesson! } }.not_to raise_error
+        expect { number_of_parts.times { subject.advance_lesson! } }.not_to raise_error
         expect { subject.advance_lesson! }.to raise_error Student::AdvanceError
+      end
+    end
+
+    shared_context :hundred_lessons do
+      let!(:lessons) do
+        FactoryBot.rewind_sequences
+        create_list(:lesson_with_parts, 100, parts_count: 3)
+      end
+
+      let(:lesson_parts) { lessons.flat_map { |lesson| lesson.parts.all } }
+    end
+
+    context 'when there are 100 lessons with three parts each' do
+      include_context :hundred_lessons
+      subject { create(:student) }
+      include_examples :advance_lesson, 100 * 3
+    end
+
+    context 'when the first 50 lessons have an additional two parts added' do
+      subject { create(:student) }
+
+      include_context :hundred_lessons
+
+      shared_context :add_parts do
+        before do
+          lessons.take(50).each do |lesson|
+            [4, 5].each { |n| create(:lesson_part, number: n, lesson: lesson) }
+          end
+        end
+      end
+
+      context 'before a student has progressed at all' do
+        include_context :add_parts
+        include_examples :advance_lesson, 50 * 5 + 50 * 3
+      end
+
+      context 'with a student on part 3 of lesson 40' do
+        before do
+          subject.update! lesson_part: LessonPart
+            .joins(:lesson)
+            .merge(Lesson.where(number: 40))
+            .find_by(number: 3)
+        end
+
+        include_context :add_parts
+
+        it 'does not affect the student\'s progress' do
+          expect(subject.lesson_part.number).to eq 3
+          expect(subject.lesson.number).to eq 40
+        end
+
+        it 'does not prevent the student from progressing' do
+          expect { subject.advance_lesson! }
+            .to change { subject.lesson_part.number }
+            .from(3)
+            .to(4)
+
+          expect { 50.times { subject.advance_lesson! } }
+            .to change { [subject.lesson, subject.lesson_part].map(&:number) }
+            .to([50, 4])
+
+          # - 2 advances to lesson 51 part 1
+          # - 48 advances to get to lesson 67 part 1
+          expect { 50.times { subject.advance_lesson! } }
+            .to change { [subject.lesson, subject.lesson_part].map(&:number) }
+            .to([67, 1])
+
+          expect { ((100 - 67 + 1) * 3 - 1).times { subject.advance_lesson! } }
+            .to change { subject.lesson_part }
+            .to(lesson_parts.last)
+        end
       end
     end
   end

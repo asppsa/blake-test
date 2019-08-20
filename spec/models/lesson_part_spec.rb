@@ -83,13 +83,27 @@ RSpec.describe LessonPart, type: :model do
       end
     end
 
+    shared_examples :next do |number_of_parts|
+      it 'enables iteration from the first to last lesson part' do
+        expect((number_of_parts - 1).times.reduce(first) { |lesson_part| lesson_part.next }).to eq(last)
+      end
+    end
+
     context 'when there are 100 lessons with three parts each' do
       let(:lessons) { create_list(:lesson_with_parts, 100, parts_count: 3) }
       let(:first) { lessons.first.parts.first }
       let(:last) { lessons.last.parts.last }
 
-      it 'enables iteration from the first to last lesson part' do
-        expect((100 * 3 - 1).times.reduce(first) { |lesson_part| lesson_part.next }).to eq(last)
+      include_examples :next, 100 * 3
+
+      context 'when the first 50 have an additional two parts' do
+        before do
+          lessons.take(50).each do |lesson|
+            [4, 5].each { |n| create(:lesson_part, number: n, lesson: lesson) }
+          end
+        end
+
+        include_examples :next, 50 * 5 + 50 * 3
       end
     end
   end
