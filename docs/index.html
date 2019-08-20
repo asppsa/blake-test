@@ -181,6 +181,33 @@ expected and no students progress will be lost
 
 <p><img src="images/BlakeTest4.png"></p>
 
+<h3 id="label-Part+3-3A+A+method+to+progess+a+student+to+the+next+lesson+part">Part 3: A method to progess a student to the next lesson part</h3>
+
+<p>This is implemented via <code>Student#advance_lesson!</code>. This is just a method – there is no UI for interacting with this. Thefore, in order to test it by hand (as opposed to running the specs), you should use the Rails console:</p>
+
+<pre class="code ruby"><code class="ruby">$ rails c
+Loading development environment (Rails 5.2.3)
+irb(main):001:0&gt; s = Student.create!(name: &#39;My Student&#39;)
+   (0.1ms)  begin transaction
+  Student Create (0.5ms)  INSERT INTO &quot;students&quot; (&quot;name&quot;, &quot;created_at&quot;, &quot;updated_at&quot;) VALUES (?, ?, ?)  [[&quot;name&quot;, &quot;My Student&quot;], [&quot;created_at&quot;, &quot;2019-08-20 04:43:44.661509&quot;], [&quot;updated_at&quot;, &quot;2019-08-20 04:43:44.661509&quot;]]
+   (64.9ms)  commit transaction
+=&gt; #&lt;Student id: 6, name: &quot;My Student&quot;, created_at: &quot;2019-08-20 04:43:44&quot;, updated_at: &quot;2019-08-20 04:43:44&quot;, lesson_part_id: nil, teacher_id: nil&gt;
+irb(main):002:0&gt; s.advance_lesson!
+   (0.2ms)  begin transaction
+  Student Load (2.6ms)  SELECT  &quot;students&quot;.* FROM &quot;students&quot; WHERE &quot;students&quot;.&quot;id&quot; = ? LIMIT ?   [[&quot;id&quot;, 6], [&quot;LIMIT&quot;, 1]]
+  LessonPart Load (0.3ms)  SELECT  &quot;lesson_parts&quot;.* FROM &quot;lesson_parts&quot; INNER JOIN &quot;lessons&quot; ON &quot;lessons&quot;.&quot;id&quot; = &quot;lesson_parts&quot;.&quot;lesson_id&quot; WHERE &quot;lessons&quot;.&quot;number&quot; = ? AND &quot;lesson_parts&quot;.&quot;number&quot; = ? LIMIT ?  [[&quot;number&quot;, 1], [&quot;number&quot;, 1], [&quot;LIMIT&quot;, 1]]
+  Student Update (0.5ms)  UPDATE &quot;students&quot; SET &quot;lesson_part_id&quot; = ?, &quot;updated_at&quot; = ? WHERE &quot;students&quot;.&quot;id&quot; = ?  [[&quot;lesson_part_id&quot;, 1], [&quot;updated_at&quot;, &quot;2019-08-20 04:43:54.548709&quot;], [&quot;id&quot;, 6]]
+   (71.0ms)  commit transaction
+=&gt; #&lt;LessonPart id: 1, number: 1, lesson_id: 1, created_at: &quot;2019-08-19 02:49:57&quot;, updated_at: &quot;2019-08-19 02:49:57&quot;&gt;
+irb(main):003:0&gt; s.advance_lesson!
+&lt;snip&gt;
+=&gt; #&lt;LessonPart id: 2, number: 2, lesson_id: 1, created_at: &quot;2019-08-19 02:49:57&quot;, updated_at: &quot;2019-08-19 02:49:57&quot;&gt;
+irb(main):003:0&gt; 99.times { s.advance_lesson! }
+&lt;watch it go ...&gt;
+</code></pre>
+
+<p>Note that the database definitely needs to be seeded for this to work. There is more information about <code>#advance_lesson!</code> below.</p>
+
 <h2 id="label-Further+documentation">Further documentation</h2>
 
 <p>Most of the Ruby code has been documented using <a href="https://yardoc.org/">YARD</a>. You will find the generated files in the <code>docs</code> folder. You can open these in a browser by visiting <code>file:///path/to/the/blake-test/docs/index.html</code>. They are also <a href="https://asppsa.github.io/blake-test/">hosted via GitHub pages</a>.</p>
@@ -307,30 +334,36 @@ expected and no students progress will be lost
 
 <h3 id="label-Part+3">Part 3</h3>
 
-<p>I have not implemented part 3 (yet!). My plan for this is to add a simple method to the <code>Student</code> model called <code>#advance_lesson</code>, and <code>#next</code> methods to <code>Lesson</code> and <code>LessonPart</code>.</p>
-<ul><li>
-<p><code>Lesson#next</code> would simply return the <code>Lesson</code> with the next largest  <code>#number</code> (i.e. minimum number that is larger than x), or <code>nil</code>.</p>
-</li><li>
-<p><code>LessonPart#next</code> would return either the next lesson part in the current  lesson, or the first lesson part of the next one (or <code>nil</code>).</p>
-</li></ul>
-
-<p>The <code>#advance_lesson</code> method would perform the following business logic:</p>
+<p>The brief specifically requests “a method”, so this requirement has been implemented as a simple method on the <code>Student</code> model called <code>#advance_lesson!</code>. It depends on two methods implemented on <code>LessonPart</code>: <code>.initial</code> and <code>#next</code>. The former returns Lesson 1, Part 1; the latter returns the “next” lesson part, defined as either:</p>
 <ol><li>
-<p>If the student has no current lesson, advance them to the first part of the  first lesson.</p>
+<p>the lesson part in the current lesson with the next <code>#number</code> (i.e. `number</p>
 </li><li>
-<p>Otherwise,</p>
-<ol><li>
-<p>Advance to the next lesson part (using <code>LessonPart#next</code>), if there is one.</p>
+<p>1<code>); or if that is</code>nil`, and there are no further lesson parts in the</p>
 </li><li>
-<p>If there are no more lessons, throw an exception.</p>
-</li></ol>
+<p>lesson …</p>
+</li><li>
+<p>the lesson part in the next lesson (where that is defined in  <code>Lesson#next</code> as the lesson with the next <code>#number</code>) with <code>#number</code> equal to  one.</p>
 </li></ol>
 
-<p>This would be implemented purely as model methods with corresponding specs for the various options outlined. An optional extra could be to add an “Advance” button somewhere in the interface, but this isn&#39;t called for by the brief. Instructions for using the method could involve launching the Rails console.</p>
+<p><code>Student#advance_lesson!</code> assigns <code>#lesson_part</code> to either:</p>
+<ol><li>
+<p><code>LessonPart.initial</code>, if there is no current lesson (i.e.  <code>student.lesson_part</code> is <code>nil</code>); or</p>
+</li><li>
+<p><code>lesson_part.next</code>.</p>
+</li></ol>
 
-<p>A test for this should include setting up the 100 lessons with parts, and ensuring that the student can advance all the way to the end.</p>
+<p>If either of <code>LessonPart.initial</code> or <code>student.lesson_part.next</code> return <code>nil</code>, then a <code>Student::AdvanceError</code> is raised. This indicates one of the following:</p>
+<ol><li>
+<p>that there is no initial lesson part (e.g. if lesson models have not been  created, or if the numbering does not start at one);</p>
+</li><li>
+<p>that there is a “gap” between lesson parts, or betweeen lessons (e.g. if  there are lessons 2 and 4, but not lesson 3); or</p>
+</li><li>
+<p>that we have attempted to advance beyond the last lesson.</p>
+</li></ol>
 
-<p>It would be noted here that in the real world a method like this could be moved into a separate class/module (e.g. using <a href="https://dry-rb.org/gems/dry-monads/">dry-monads</a>), because in a real-world app, storing this kind of logic in the model can result in “fat models”, but that there is no risk of a fat model in this case.</p>
+<p>Specs have been written in <code>spec/models/student_spec.rb</code> to ensure that this method can progress a student from the first to the last lesson, in a scenario where there are 100 lessons with three parts each. This fulfills the verification requirement in Part 3.</p>
+
+<p>It is noted that in the real world a method like this might be better placed in a separate business logic class/module (e.g. using <a href="https://dry-rb.org/gems/dry-monads/">dry-monads</a>), because in a real-world app, storing this kind of logic in the model can result in “fat models”. However, in this case, there is clearly no risk of this occurring.</p>
 
 <h3 id="label-Part+4">Part 4</h3>
 
@@ -350,7 +383,7 @@ expected and no students progress will be lost
 </div></div>
 
       <div id="footer">
-  Generated on Mon Aug 19 15:54:15 2019 by
+  Generated on Tue Aug 20 14:50:05 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.6.3).
 </div>

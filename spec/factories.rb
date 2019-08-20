@@ -40,6 +40,7 @@ FactoryBot.define do
       end
 
       after :create do |lesson, evaluator|
+        FactoryBot.sequence_by_name(:lesson_part_number).rewind
         create_list(:lesson_part, evaluator.parts_count, lesson: lesson)
       end
     end

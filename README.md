@@ -149,6 +149,36 @@ as a simple table giving student names and their current lesson.
 
 ![Screenshot of the students report](images/BlakeTest4.png)
 
+### Part 3: A method to progess a student to the next lesson part
+
+This is implemented via `Student#advance_lesson!`.  This is just a method --
+there is no UI for interacting with this.  Thefore, in order to test it by hand
+(as opposed to running the specs), you should use the Rails console:
+
+    $ rails c
+    Loading development environment (Rails 5.2.3)
+    irb(main):001:0> s = Student.create!(name: 'My Student')
+       (0.1ms)  begin transaction
+      Student Create (0.5ms)  INSERT INTO "students" ("name", "created_at", "updated_at") VALUES (?, ?, ?)  [["name", "My Student"], ["created_at", "2019-08-20 04:43:44.661509"], ["updated_at", "2019-08-20 04:43:44.661509"]]
+       (64.9ms)  commit transaction
+    => #<Student id: 6, name: "My Student", created_at: "2019-08-20 04:43:44", updated_at: "2019-08-20 04:43:44", lesson_part_id: nil, teacher_id: nil>
+    irb(main):002:0> s.advance_lesson!
+       (0.2ms)  begin transaction
+      Student Load (2.6ms)  SELECT  "students".* FROM "students" WHERE "students"."id" = ? LIMIT ?   [["id", 6], ["LIMIT", 1]]
+      LessonPart Load (0.3ms)  SELECT  "lesson_parts".* FROM "lesson_parts" INNER JOIN "lessons" ON "lessons"."id" = "lesson_parts"."lesson_id" WHERE "lessons"."number" = ? AND "lesson_parts"."number" = ? LIMIT ?  [["number", 1], ["number", 1], ["LIMIT", 1]]
+      Student Update (0.5ms)  UPDATE "students" SET "lesson_part_id" = ?, "updated_at" = ? WHERE "students"."id" = ?  [["lesson_part_id", 1], ["updated_at", "2019-08-20 04:43:54.548709"], ["id", 6]]
+       (71.0ms)  commit transaction
+    => #<LessonPart id: 1, number: 1, lesson_id: 1, created_at: "2019-08-19 02:49:57", updated_at: "2019-08-19 02:49:57">
+    irb(main):003:0> s.advance_lesson!
+    <snip>
+    => #<LessonPart id: 2, number: 2, lesson_id: 1, created_at: "2019-08-19 02:49:57", updated_at: "2019-08-19 02:49:57">
+    irb(main):003:0> 99.times { s.advance_lesson! }
+    <watch it go ...>
+
+Note that the database definitely needs to be seeded for this to work.  There
+is more information about `#advance_lesson!` below.
+
+
 ## Further documentation
 
 Most of the Ruby code has been documented using [YARD][yard].  You will find
@@ -408,36 +438,44 @@ navigate between the students listing and the teachers.
 
 ### Part 3
 
-I have not implemented part 3 (yet!).  My plan for this is to add a simple
-method to the `Student` model called `#advance_lesson`, and `#next` methods to
-`Lesson` and `LessonPart`.
+The brief specifically requests "a method", so this requirement has
+been implemented as a simple method on the `Student` model called
+`#advance_lesson!`.  It depends on two methods implemented on `LessonPart`:
+`.initial` and `#next`.  The former returns Lesson 1, Part 1; the latter
+returns the "next" lesson part, defined as either:
 
-+ `Lesson#next` would simply return the `Lesson` with the next largest
-  `#number` (i.e. minimum number that is larger than x), or `nil`.
-+ `LessonPart#next` would return either the next lesson part in the current
-  lesson, or the first lesson part of the next one (or `nil`).
+1. the lesson part in the current lesson with the next `#number` (i.e. `number
+   + 1`); or if that is `nil`, and there are no further lesson parts in the
+   + lesson ...
+2. the lesson part in the next lesson (where that is defined in
+   `Lesson#next` as the lesson with the next `#number`) with `#number` equal to
+   one.
 
-The `#advance_lesson` method would perform the following business logic:
+`Student#advance_lesson!` assigns `#lesson_part` to either:
 
-1. If the student has no current lesson, advance them to the first part of the
-   first lesson.
-2. Otherwise,
-     1. Advance to the next lesson part (using `LessonPart#next`), if there is
-        one.
-     2. If there are no more lessons, throw an exception.
+1. `LessonPart.initial`, if there is no current lesson (i.e.
+   `student.lesson_part` is `nil`); or
+2. `lesson_part.next`.
 
-This would be implemented purely as model methods with corresponding specs for
-the various options outlined.  An optional extra could be to add an "Advance"
-button somewhere in the interface, but this isn't called for by the brief.
-Instructions for using the method could involve launching the Rails console.
+If either of `LessonPart.initial` or `student.lesson_part.next` return `nil`,
+then a `Student::AdvanceError` is raised.  This indicates one of the following:
 
-A test for this should include setting up the 100 lessons with parts, and
-ensuring that the student can advance all the way to the end.
+1. that there is no initial lesson part (e.g. if lesson models have not been
+   created, or if the numbering does not start at one);
+2. that there is a "gap" between lesson parts, or betweeen lessons (e.g. if
+   there are lessons 2 and 4, but not lesson 3); or
+3. that we have attempted to advance beyond the last lesson.
 
-It would be noted here that in the real world a method like this could be moved
-into a separate class/module (e.g. using [dry-monads][dry-monads]), because in
-a real-world app, storing this kind of logic in the model can result in "fat
-models", but that there is no risk of a fat model in this case.
+Specs have been written in `spec/models/student_spec.rb` to ensure that this
+method can progress a student from the first to the last lesson, in a scenario
+where there are 100 lessons with three parts each.  This fulfills the
+verification requirement in Part 3.
+
+It is noted that in the real world a method like this might be better placed in
+a separate business logic class/module (e.g. using [dry-monads][dry-monads]),
+because in a real-world app, storing this kind of logic in the model can result
+in "fat models".  However, in this case, there is clearly no risk of this
+occurring.
 
 
 ### Part 4
