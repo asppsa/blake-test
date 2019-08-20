@@ -35,3 +35,9 @@ Style/MixinUsage:
 Style/NumericLiterals:
   Exclude:
     - db/**/*.rb
+
+Style/SafeNavigation:
+  Enabled: false
+
+Style/SymbolProc:
+  Enabled: false
