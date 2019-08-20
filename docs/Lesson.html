@@ -241,6 +241,30 @@
 </li>
 
       
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#next-instance_method" title="#next (instance method)">#<strong>next</strong>  &#x21d2; Lesson<sup>?</sup> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the next <span class='object_link'><a href="" title="Lesson (class)">Lesson</a></span>, or `nil`.</p>
+</div></span>
+  
+</li>
+
+      
     </ul>
   
 
@@ -493,12 +517,80 @@
 </table>
 </div>
     
+      <div class="method_details ">
+  <h3 class="signature " id="next-instance_method">
+  
+    #<strong>next</strong>  &#x21d2; <tt><span class='object_link'><a href="" title="Lesson (class)">Lesson</a></span></tt><sup>?</sup> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the next <span class='object_link'><a href="" title="Lesson (class)">Lesson</a></span>, or `nil`.</p>
+
+<p>The next lesson is defined as the one with the next number (i.e. current number plus 1), so if there&#39;s a “gap” (e.g. lesson numbers 1, 2, 4), `nil` will be returned instead.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>Getting lesson 2</p>
+</div></p>
+      
+      <pre class="example code"><code><span class='const'><span class='object_link'><a href="" title="Lesson (class)">Lesson</a></span></span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_next'>next</span> <span class='comment'>#=&gt; #&lt;Lesson number=2&gt;</span></code></pre>
+    
+  </div>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="" title="Lesson (class)">Lesson</a></span></tt>, <tt>nil</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+35
+36
+37</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/lesson.rb', line 35</span>
+
+<span class='kw'>def</span> <span class='kw'>next</span>
+  <span class='const'><span class='object_link'><a href="" title="Lesson (class)">Lesson</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find_by'>find_by</span><span class='lparen'>(</span><span class='label'>number:</span> <span class='id identifier rubyid_number'>number</span> <span class='op'>+</span> <span class='int'>1</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
   </div>
 
 </div>
 
       <div id="footer">
-  Generated on Mon Aug 19 15:54:17 2019 by
+  Generated on Tue Aug 20 14:50:07 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.6.3).
 </div>
