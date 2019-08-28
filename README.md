@@ -416,7 +416,7 @@ students and teachers as two distinct (but associated) entities.
 
 I then had decide on the kind of relation that these entities would have.  I
 picked a one-to-many relation from teachers to students, because it was the
-simplest solution that fix the requirements of the brief.  This required
+simplest solution that fit the requirements of the brief.  This required
 assuming that a student could only be taught by one teacher at a time, which is
 probably not super-realistic.  A many-to-many relationship would have taken
 longer to implement, however.
@@ -453,9 +453,9 @@ been implemented as a simple method on the `Student` model called
 `.initial` and `#next`.  The former returns Lesson 1, Part 1; the latter
 returns the "next" lesson part, defined as either:
 
-1. the lesson part in the current lesson with the next `#number` (i.e. `number
-   + 1`); or if that is `nil`, and there are no further lesson parts in the
-   + lesson ...
+1. the lesson part in the current lesson with the next `#number` (i.e. 
+   `number + 1`); or if that is `nil`, and there are no further lesson parts in the
+   lesson ...
 2. the lesson part in the next lesson (where that is defined in
    `Lesson#next` as the lesson with the next `#number`) with `#number` equal to
    one.
